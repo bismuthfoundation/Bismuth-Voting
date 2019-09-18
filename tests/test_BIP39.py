@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Makes sure BIP39 matches reference implementation
+Makes sure BIP39 matches reference implementation.
+From reference Trezor Python impl.
 
 run with pytest -v
 """
