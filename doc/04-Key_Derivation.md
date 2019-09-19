@@ -29,7 +29,7 @@ The function CKDpriv((kpar, cpar), S) → (ks, cs) computes a child extended pri
 - The returned chain code cs is IR.
 - In case parse256(IL) ≥ n or ks = 0, the resulting key is invalid, and one should append a "*" char to S.
 
-- The key used for AES encrypting the vote is the first 32-bytes of Ks where Ks is point(parse256(IL)) + Kpar.
+- The key used for AES encrypting the vote is sha256(Ks) where Ks is point(parse256(IL)).
 
 ## Implementation
 

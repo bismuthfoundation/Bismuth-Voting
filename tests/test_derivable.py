@@ -42,7 +42,7 @@ def test_seed(verbose=False):
     )
     assert (
         key.to_aes_key().hex()
-        == "0418b9908d43f503ae8ed3128c35edd8e0b9350c01a389bf5d83aece4822722b"
+        == "3b49e2c776a2a8c3a1b5666ab19e3b1103bb4a435efc70eadf829bfd59c06e20"
     )
 
 
@@ -58,7 +58,7 @@ def test_derive(verbose=False):
     )
     assert (
         address_key1.to_aes_key().hex()
-        == "0461f6c1c68ab13989c8afe7748f8b7103c83a2dacc7358dc471d8331401e8a9"
+        == "e04dd85a24c134292713e7896d67669751aca36910d134245f97b8ea3652989b"
     )
     address_key2 = master_key.derive("Bis_test_address2")
     if verbose:
@@ -70,7 +70,7 @@ def test_derive(verbose=False):
     )
     assert (
         address_key2.to_aes_key().hex()
-        == "04624df9b382cbd6e436b960617ca0f6ca04a24ebbad6317c5e480fe45656425"
+        == "5fff141d265e752c83099b9a491dcd161637a92b870fb0b3558d0689f5b0f6ef"
     )
 
     motion_key1a = address_key1.derive(
@@ -85,7 +85,7 @@ def test_derive(verbose=False):
     )
     assert (
         motion_key1a.to_aes_key().hex()
-        == "0427b55efbf8d18ebe391a3164d3ad3672445f6ad462c8e78fdac30f73501eb4"
+        == "fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece"
     )
 
     motion_key1b = address_key1.derive(
@@ -100,7 +100,7 @@ def test_derive(verbose=False):
     )
     assert (
         motion_key1b.to_aes_key().hex()
-        == "0446b87cfed5da66f30c8506401f863e5648b0ad96ce0e98c7bc7f55c0d1fd43"
+        == "59d33c0c38dd1a292245116ab2bf0911b0aa61a15523f4b7cb23be498e3bf7ce"
     )
 
 

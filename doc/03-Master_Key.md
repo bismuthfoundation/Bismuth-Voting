@@ -35,7 +35,7 @@ We only use english wordlist fior the time being.
 
 No matter how many addresses he wants to vote with, the user only has one single mnemonic to backup. 
  
-## Test vectors
+## Test vectors
 
 See default BIP39 test vectors https://github.com/trezor/python-mnemonic/blob/master/vectors.json
 

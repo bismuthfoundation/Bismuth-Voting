@@ -60,8 +60,9 @@ class DerivableKey:
         return K
 
     def to_aes_key(self) -> bytes:
-        """Returns first 32 bytes of the pubkey, to use as AEs key"""
-        return self.to_pubkey()[:32]
+        """Returns sha256 hash of the pubkey, to use as AEs key"""
+        pubkey = self.to_pubkey()
+        return sha256(pubkey).digest()
 
     def derive(self, s: str) -> "DerivableKey":
         """Derive with given buffer"""
