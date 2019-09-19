@@ -50,8 +50,10 @@ TODO
 
 **Operation:** bgvp:vote
 
-**Data:** a string  
-motion_number:b64_encode(encrypted(vote option + random padding))
+**Data:** a string
+motion_number:b64_encode(encrypted)
+
+AES encryption gives encrypted from (vote option + space + random padding to 16 bytes)   
 
 
 Notes: Voting app must verify  
@@ -74,7 +76,9 @@ TODO
 **Operation:** bgvp:change
 
 **Data:** a string  
-initial_vote_txid:b64_encode(encrypted(new vote option + random padding))
+initial_vote_txidb64_encode(encrypted)
+
+AES encryption gives encrypted from (new vote option + space + random padding to 16 bytes)   
 
 Notes: Voting app must verify 
 - Initial_vote_txid exists and is a valid bgvp:vote transaction

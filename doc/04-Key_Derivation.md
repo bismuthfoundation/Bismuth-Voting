@@ -11,7 +11,10 @@ See BIP32 for reference and conventions used in the present document: https://gi
 Keys will be extended keys (512 bits) with only the public part used as voting key.    
 We only use normal child keys.
 
-For key derivation purposes, keys are considered as ecdsa keys (secp256k1) but will be used to encode the messages with AES block cipher.
+key derivation paths are thus in the form  `m/address/motion_id`
+
+For key derivation purposes, keys are considered as ecdsa keys (secp256k1) but will be used to encode the messages with AES block cipher.  
+Messages are short so fit in the 16 bytes message len, CBC is to be used otherwise.
 
 > Following existing and heavily field tested algorithms avoids flaws of "roll your own crypto" like extension attacks.
 
