@@ -1,0 +1,402 @@
+[
+  {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "path": "Bis_test_address1/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "fc0c8a0c337462b1e42b76f490e17d10909244ea03bd8ca210180d80010f5d94e0da7e480cfb8e90cbf9d3ea569fa1669c535fdd2244a27a9dab7daac1739f5e",
+    "aes_key_hex": "4f877e349ff1cec77bd0bfdff32b6c13c109980d273db79bf6a396f67c85f690",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "68fec9d744499d4ee85111cfe29a1e99",
+        "vote_data": "0:aP7J10RJnU7oURHP4poemQ==",
+        "vote_reveal_data": "T4d+NJ/xzsd70L/f8ytsE8EJmA0nPbeb9qOW9nyF9pA="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "a21a1a5d54c17a0fdc56eb42fad5b9cd",
+        "vote_data": "0:ohoaXVTBeg/cVutC+tW5zQ==",
+        "vote_reveal_data": "T4d+NJ/xzsd70L/f8ytsE8EJmA0nPbeb9qOW9nyF9pA="
+      }
+    ]
+  },
+  {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "path": "Bis_test_address1/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "363a87921b04540b98bceafa26f8f5d0ed6d88e73166641e7c7abce97a60c32c19ab1f12439f208e8317e246f479cf47fb8d8ce7428dfc79f08891b16e70eb38",
+    "aes_key_hex": "39ac5b64f8618cc76c80eb618c4af69c83613b29eec535ab1e1867a2935dd961",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "c083d3f7661b9c380953a83559570133",
+        "vote_data": "0:wIPT92YbnDgJU6g1WVcBMw==",
+        "vote_reveal_data": "OaxbZPhhjMdsgOthjEr2nINhOynuxTWrHhhnopNd2WE="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "0f3f682dc266da248dac8505d4ae1f68",
+        "vote_data": "0:Dz9oLcJm2iSNrIUF1K4faA==",
+        "vote_reveal_data": "OaxbZPhhjMdsgOthjEr2nINhOynuxTWrHhhnopNd2WE="
+      }
+    ]
+  },
+  {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "path": "Bis_test_address2/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "1e571050c7df9c75d02bff6d8b3f61d7061f5c65953fffe17372d04555c11bd8e742d1cd0059b6a596ccd55e8ea035c2902074e25cf1b51591e80c4114769713",
+    "aes_key_hex": "89d12e043fb076eccf090a37ce1d7756dd4046b95a6a170c62f23b2d830ee9ae",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "47e8b44eb45523c6ec6b7c735e2e3713",
+        "vote_data": "0:R+i0TrRVI8bsa3xzXi43Ew==",
+        "vote_reveal_data": "idEuBD+wduzPCQo3zh13Vt1ARrlaahcMYvI7LYMO6a4="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "9aaf76d277826c8a6c4673b9f4d0dcce",
+        "vote_data": "0:mq920neCbIpsRnO59NDczg==",
+        "vote_reveal_data": "idEuBD+wduzPCQo3zh13Vt1ARrlaahcMYvI7LYMO6a4="
+      }
+    ]
+  },
+  {
+    "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+    "path": "Bis_test_address2/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "ef3f19c996b19e6bc92ca5c07c15efb0043ba6fc6c87182a232e671c7833d7e7b1734fa7c91004a492b81084c36ea213d588897b443c013145081b67fbe2cef0",
+    "aes_key_hex": "9f6464121493ba26fa7428acf547e73615fd61abbabb6c8ae69098619edbb41f",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "dafb72a9ff4cb4b64c525e04a752483f",
+        "vote_data": "0:2vtyqf9MtLZMUl4Ep1JIPw==",
+        "vote_reveal_data": "n2RkEhSTuib6dCis9UfnNhX9Yau6u2yK5pCYYZ7btB8="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "7cc5b6bd8901f18dd32b100543d0beec",
+        "vote_data": "0:fMW2vYkB8Y3TKxAFQ9C+7A==",
+        "vote_reveal_data": "n2RkEhSTuib6dCis9UfnNhX9Yau6u2yK5pCYYZ7btB8="
+      }
+    ]
+  },
+  {
+    "mnemonic": "letter advice cage absurd amount doctor acoustic avoid letter advice cage above",
+    "path": "Bis_test_address1/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "874b74454b3c073320fcca8aacf0b5cf606550aaa5cac0fa718078ca5ecff6b43ee220e340fbfdd51d9202c2598f2f8930777c4d146c41a2bf915101a4bd72cb",
+    "aes_key_hex": "fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "7b8a69e9a76b935eea79497e0aa4431d",
+        "vote_data": "0:e4pp6adrk17qeUl+CqRDHQ==",
+        "vote_reveal_data": "/b4RnPUDkrSD4HKvEbZzHPu0V+NeVOgR4/HKH65M7s4="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "e7361d788a54e8d00a83e95e1387a853",
+        "vote_data": "0:5zYdeIpU6NAKg+leE4eoUw==",
+        "vote_reveal_data": "/b4RnPUDkrSD4HKvEbZzHPu0V+NeVOgR4/HKH65M7s4="
+      }
+    ]
+  },
+  {
+    "mnemonic": "letter advice cage absurd amount doctor acoustic avoid letter advice cage above",
+    "path": "Bis_test_address1/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "f5fef68b6e7fbc7d518506a924687e75590ff557b61f4c56f1df1b1ec7b852b80d98113e35eebd3e3df500f4caa071044043c03d47bba613ce5b68c121a62bae",
+    "aes_key_hex": "59d33c0c38dd1a292245116ab2bf0911b0aa61a15523f4b7cb23be498e3bf7ce",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "7951008ed8daa9803f9980ab768381d3",
+        "vote_data": "0:eVEAjtjaqYA/mYCrdoOB0w==",
+        "vote_reveal_data": "WdM8DDjdGikiRRFqsr8JEbCqYaFVI/S3yyO+SY47984="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "d0d37cac5bd06e1b9f5b565959cd06cd",
+        "vote_data": "0:0NN8rFvQbhufW1ZZWc0GzQ==",
+        "vote_reveal_data": "WdM8DDjdGikiRRFqsr8JEbCqYaFVI/S3yyO+SY47984="
+      }
+    ]
+  },
+  {
+    "mnemonic": "letter advice cage absurd amount doctor acoustic avoid letter advice cage above",
+    "path": "Bis_test_address2/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "aba951cc79a6c043ed5e4eece704f8a216685a8da6a62a6114176b76a49d23b3c4804999646fda5f9c8f136d3a7ec983662995d8ab61351536a316bdd89974d0",
+    "aes_key_hex": "272ce15a1b3366c3b33ff58157f3d578c25998582f5d53569d43307acfe3d748",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "7c6ecca4999201d9f33731d442afb54f",
+        "vote_data": "0:fG7MpJmSAdnzNzHUQq+1Tw==",
+        "vote_reveal_data": "JyzhWhszZsOzP/WBV/PVeMJZmFgvXVNWnUMwes/j10g="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "64c9bc17fc4c1d69450bf2662927f4e4",
+        "vote_data": "0:ZMm8F/xMHWlFC/JmKSf05A==",
+        "vote_reveal_data": "JyzhWhszZsOzP/WBV/PVeMJZmFgvXVNWnUMwes/j10g="
+      }
+    ]
+  },
+  {
+    "mnemonic": "letter advice cage absurd amount doctor acoustic avoid letter advice cage above",
+    "path": "Bis_test_address2/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "1e2a20aa15ecfbd2bc84dbbfa303e98fc8c4765664720f429fe03d05f7e6924902440ddd5f8a0abc6c83e3be829daae5c1d1d51cc7706ce28026a94a021d4be9",
+    "aes_key_hex": "0e9fc25da8ac4602cf0a494975b13342c23d0b3c7440a4046b1c6ec9e2848651",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "af943576f252fefb98acfeeb59c4a5c3",
+        "vote_data": "0:r5Q1dvJS/vuYrP7rWcSlww==",
+        "vote_reveal_data": "Dp/CXaisRgLPCklJdbEzQsI9Czx0QKQEaxxuyeKEhlE="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "f969a57616bdab1fd71347108e992b6a",
+        "vote_data": "0:+Wmldha9qx/XE0cQjpkrag==",
+        "vote_reveal_data": "Dp/CXaisRgLPCklJdbEzQsI9Czx0QKQEaxxuyeKEhlE="
+      }
+    ]
+  },
+  {
+    "mnemonic": "legal winner thank year wave sausage worth useful legal winner thank yellow",
+    "path": "Bis_test_address1/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "558f78a14014c52b2eabf8a6938d3cec3ce22377f8d10d61bf64bc4b5f31993224f94227e9b50d92f38c696cc4f867b69c08baf7e261396648e8a976dd8e24e8",
+    "aes_key_hex": "877699888af1283aa2b6f416a6bff8425f01c0dfe99a023a78bc05b0a11fe69b",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "16e813729f420aed3a1bf8d880790ed6",
+        "vote_data": "0:FugTcp9CCu06G/jYgHkO1g==",
+        "vote_reveal_data": "h3aZiIrxKDqitvQWpr/4Ql8BwN/pmgI6eLwFsKEf5ps="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "8707ef9c65c898dce9ef98d1e3368fa2",
+        "vote_data": "0:hwfvnGXImNzp75jR4zaPog==",
+        "vote_reveal_data": "h3aZiIrxKDqitvQWpr/4Ql8BwN/pmgI6eLwFsKEf5ps="
+      }
+    ]
+  },
+  {
+    "mnemonic": "legal winner thank year wave sausage worth useful legal winner thank yellow",
+    "path": "Bis_test_address1/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "4e438cc20e62b92565244a329b125ed0920c948fc602504add5720883ce35ad24b814a070d5c1e422054b140e3913884abde6cdbd886bc5b911c061b8ec406d8",
+    "aes_key_hex": "9632f6dc5c28ed265ed53bfcbee3945c3bc697d58efd4eeb24a8f1e70fdbd9f0",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "0bfebf35867bc035cc66187f2164f283",
+        "vote_data": "0:C/6/NYZ7wDXMZhh/IWTygw==",
+        "vote_reveal_data": "ljL23Fwo7SZe1Tv8vuOUXDvGl9WO/U7rJKjx5w/b2fA="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "26185fb430315951f37f712c49853846",
+        "vote_data": "0:JhhftDAxWVHzf3EsSYU4Rg==",
+        "vote_reveal_data": "ljL23Fwo7SZe1Tv8vuOUXDvGl9WO/U7rJKjx5w/b2fA="
+      }
+    ]
+  },
+  {
+    "mnemonic": "legal winner thank year wave sausage worth useful legal winner thank yellow",
+    "path": "Bis_test_address2/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "6a8afd90fbec5172d86bebbcf7591dacd71e2e36f38c382ea1db5bdda61cda6db660fa4ab7e6ff7f85a50fecde788985f743e2b3ef4fd216a9915aa5f656b9b2",
+    "aes_key_hex": "17d50dfce713fe39f5dfb9e444f826a01db92051787cf8abd766a0eb4b3d6e16",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "0c0a14c067ec298abe4113b1d9127321",
+        "vote_data": "0:DAoUwGfsKYq+QROx2RJzIQ==",
+        "vote_reveal_data": "F9UN/OcT/jn137nkRPgmoB25IFF4fPir12ag60s9bhY="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "b0f8796237e5dd26309cad1365dd2e6d",
+        "vote_data": "0:sPh5Yjfl3SYwnK0TZd0ubQ==",
+        "vote_reveal_data": "F9UN/OcT/jn137nkRPgmoB25IFF4fPir12ag60s9bhY="
+      }
+    ]
+  },
+  {
+    "mnemonic": "legal winner thank year wave sausage worth useful legal winner thank yellow",
+    "path": "Bis_test_address2/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "ce40d9defb7b4ccc1dd15149f9b4102293821821c63bb09c6fa099b4cb6eaf76059955304f6d1e94b01c481648f1d802d183fbbfc576b3c25c1cb63b0e41ffe4",
+    "aes_key_hex": "0b6bcf0e3e077dad290017d83303009f071c6e10cbd901424ca54c0675344d01",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "818de4778e19e4b219b64d526d0e030e",
+        "vote_data": "0:gY3kd44Z5LIZtk1SbQ4DDg==",
+        "vote_reveal_data": "C2vPDj4Hfa0pABfYMwMAnwccbhDL2QFCTKVMBnU0TQE="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "831f4e75c3cbb63febdab864e083f549",
+        "vote_data": "0:gx9OdcPLtj/r2rhk4IP1SQ==",
+        "vote_reveal_data": "C2vPDj4Hfa0pABfYMwMAnwccbhDL2QFCTKVMBnU0TQE="
+      }
+    ]
+  },
+  {
+    "mnemonic": "zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong",
+    "path": "Bis_test_address1/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "ac78f1043e66d14f2ddde2b77669a711aedbde4ce997aec0cdcc0ad44335f3307425171ae292318c85c62b5c1b2e18cae21dfc3ae2b7ff047ba79d53a95c4876",
+    "aes_key_hex": "68ce90d59938c064fd49423f2e4f7ff4a17221cdb142dbfaee5497165c1801f6",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "974606d3ad76b5d9aced2b9052310aa5",
+        "vote_data": "0:l0YG0612tdms7SuQUjEKpQ==",
+        "vote_reveal_data": "aM6Q1Zk4wGT9SUI/Lk9/9KFyIc2xQtv67lSXFlwYAfY="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "90e073f6dc29a367dcfee455c0452150",
+        "vote_data": "0:kOBz9twpo2fc/uRVwEUhUA==",
+        "vote_reveal_data": "aM6Q1Zk4wGT9SUI/Lk9/9KFyIc2xQtv67lSXFlwYAfY="
+      }
+    ]
+  },
+  {
+    "mnemonic": "zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong",
+    "path": "Bis_test_address1/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "f78644b15c59acb8daa1064ad0c98a692482fbc8ed79702d182a3d1616452e82904b34aa429fb8e6ebbceb6ca4d7e402983f2b31437a5a5c9719a77066ac2c99",
+    "aes_key_hex": "4ee3659c971331b91f3a972a42907e56126f7c310e6043759d88dd82268e62c6",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "8219ceebc2496ad97c70cac31aa5d6c0",
+        "vote_data": "0:ghnO68JJatl8cMrDGqXWwA==",
+        "vote_reveal_data": "TuNlnJcTMbkfOpcqQpB+VhJvfDEOYEN1nYjdgiaOYsY="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "1bebcc76a2233eb1b2d4a5b4b7bdcafa",
+        "vote_data": "0:G+vMdqIjPrGy1KW0t73K+g==",
+        "vote_reveal_data": "TuNlnJcTMbkfOpcqQpB+VhJvfDEOYEN1nYjdgiaOYsY="
+      }
+    ]
+  },
+  {
+    "mnemonic": "zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong",
+    "path": "Bis_test_address2/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "49d82bb8463668b1591a292b79a0c2c61bbf57e4a896eb5dd1a5a91a441d7de6fa9a670b571fd31745b55d9d8dc6067e1ed0771d6c280aa2f6f6ad7e16c60d67",
+    "aes_key_hex": "17733cb8b7f4c5524fe20099648d324b53eb4f3c422b19a2684a5ce2ef28f610",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "ed966d99ae7dd65d6a40bcbe5da102c4",
+        "vote_data": "0:7ZZtma591l1qQLy+XaECxA==",
+        "vote_reveal_data": "F3M8uLf0xVJP4gCZZI0yS1PrTzxCKxmiaEpc4u8o9hA="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "dba4224d8b6c0bf5f6e6e6ba4ee3d2fb",
+        "vote_data": "0:26QiTYtsC/X25ua6TuPS+w==",
+        "vote_reveal_data": "F3M8uLf0xVJP4gCZZI0yS1PrTzxCKxmiaEpc4u8o9hA="
+      }
+    ]
+  },
+  {
+    "mnemonic": "zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong",
+    "path": "Bis_test_address2/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "913877a0dcc25b83ea4e6824adc09251d44147e7412fdfd98e0752748e52051fcdb0e5615f9e0c0f7e04ff63899c7655203e09d3b17e2e5df89b911406be60a1",
+    "aes_key_hex": "10a944eae12b2f475e65b9fec9c8d73d84fe71ddb76481c09b36329f0d14bebf",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "0174969997614f6343c975270b2c915f",
+        "vote_data": "0:AXSWmZdhT2NDyXUnCyyRXw==",
+        "vote_reveal_data": "EKlE6uErL0deZbn+ycjXPYT+cd23ZIHAmzYynw0Uvr8="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "2a6a5ac7ff19d864685c5862f2696104",
+        "vote_data": "0:Kmpax/8Z2GRoXFhi8mlhBA==",
+        "vote_reveal_data": "EKlE6uErL0deZbn+ycjXPYT+cd23ZIHAmzYynw0Uvr8="
+      }
+    ]
+  },
+  {
+    "mnemonic": "hamster diagram private dutch cause delay private meat slide toddler razor book happy fancy gospel tennis maple dilemma loan word shrug inflict delay length",
+    "path": "Bis_test_address1/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "a73218ebd825b64727c0bea099cc5d73ab63528fe505ce8237b7e2057f8c54b4c7c2b4392c2f3043c3e40a3e6dcc305a1641c0378431764666dd38999255622f",
+    "aes_key_hex": "1acb56d07e697019884efedf99f5fada456d4735e954d34ff66db8bd6aa4e435",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "d172e1b4c214ce52ed910b4fefac8d8d",
+        "vote_data": "0:0XLhtMIUzlLtkQtP76yNjQ==",
+        "vote_reveal_data": "GstW0H5pcBmITv7fmfX62kVtRzXpVNNP9m24vWqk5DU="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "bb6d67c3172aa19a8613a014f59cba69",
+        "vote_data": "0:u21nwxcqoZqGE6AU9Zy6aQ==",
+        "vote_reveal_data": "GstW0H5pcBmITv7fmfX62kVtRzXpVNNP9m24vWqk5DU="
+      }
+    ]
+  },
+  {
+    "mnemonic": "hamster diagram private dutch cause delay private meat slide toddler razor book happy fancy gospel tennis maple dilemma loan word shrug inflict delay length",
+    "path": "Bis_test_address1/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "4f3269217042d4c7cb764f8dc8bca3278a1cc4d3adb270b0d019e076f48436aa09a0890d2b36fb75008bfc703a0182db8bc4db53d455833f6366b62aff7f82c5",
+    "aes_key_hex": "f851764732ddd17dda831c7dc857a2c6017a24a76c6b252e051cecc38a7ba7ae",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "789d9647258e29bc8b7ffa2fa2de4d28",
+        "vote_data": "0:eJ2WRyWOKbyLf/ovot5NKA==",
+        "vote_reveal_data": "+FF2RzLd0X3agxx9yFeixgF6JKdsayUuBRzsw4p7p64="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "0cbcd9ac65281329c3983fb6f91846da",
+        "vote_data": "0:DLzZrGUoEynDmD+2+RhG2g==",
+        "vote_reveal_data": "+FF2RzLd0X3agxx9yFeixgF6JKdsayUuBRzsw4p7p64="
+      }
+    ]
+  },
+  {
+    "mnemonic": "hamster diagram private dutch cause delay private meat slide toddler razor book happy fancy gospel tennis maple dilemma loan word shrug inflict delay length",
+    "path": "Bis_test_address2/motion_1_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "7b2f485852e94ad021c7b06ef7c3dc3ed4f4a858653ce11388e076e07e6626a1f4090ed18517babae182ec66cb2e0408c2fdd11a424d9f3dbd2bebd234815334",
+    "aes_key_hex": "39de13a953d938ea1a024b29d3be65eb70f5e1f61dbd067cfa02a84b668a6a95",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "a6a369c752eb0532865c0a3c4b7ecb6a",
+        "vote_data": "0:pqNpx1LrBTKGXAo8S37Lag==",
+        "vote_reveal_data": "Od4TqVPZOOoaAksp075l63D14fYdvQZ8+gKoS2aKapU="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "ec4dbcbcf27f96bd0a39f8d61879138e",
+        "vote_data": "0:7E28vPJ/lr0KOfjWGHkTjg==",
+        "vote_reveal_data": "Od4TqVPZOOoaAksp075l63D14fYdvQZ8+gKoS2aKapU="
+      }
+    ]
+  },
+  {
+    "mnemonic": "hamster diagram private dutch cause delay private meat slide toddler razor book happy fancy gospel tennis maple dilemma loan word shrug inflict delay length",
+    "path": "Bis_test_address2/motion_2_txid_this_would_be_a_b64_encoded_string",
+    "seed_hex": "c3816f659f18671be6724204f8a32e58c176f34e7ef9be8fb208eab2a18d1abe563d6ff6da27b8f7ef72c97b7eb4393cf3289cdcf83fa7559b4477dae5defece",
+    "aes_key_hex": "bb94b268b5ba03af7546a26566d4c431ae9f64be1fbd3a5a474d693ee8cf30c6",
+    "votes": [
+      {
+        "vote_option": "A",
+        "vote_message_hex": "69c0677e95fce5f1a696e9bb730e10ed",
+        "vote_data": "0:acBnfpX85fGmlum7cw4Q7Q==",
+        "vote_reveal_data": "u5SyaLW6A691RqJlZtTEMa6fZL4fvTpaR01pPujPMMY="
+      },
+      {
+        "vote_option": "B",
+        "vote_message_hex": "c8d28b714d358cd564f3c72f1c00ee2b",
+        "vote_data": "0:yNKLcU01jNVk88cvHADuKw==",
+        "vote_reveal_data": "u5SyaLW6A691RqJlZtTEMa6fZL4fvTpaR01pPujPMMY="
+      }
+    ]
+  }
+]

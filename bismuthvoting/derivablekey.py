@@ -128,3 +128,14 @@ class DerivableKey:
         clear, _ = clear.split(b" ")
         return clear.decode("utf-8")
 
+    @classmethod
+    def get_from_path(cls, mnemonic: str, path: str) -> "DerivableKey":
+        """Gets the derived key in one go from address/motion path string"""
+        address, motion = path.split("/")
+        bip39 = BIP39.from_mnemonic(mnemonic)
+        master_key = DerivableKey(seed=bip39.to_seed())
+        address_key = master_key.derive(address)
+        motion_key = address_key.derive(motion)
+        return motion_key
+
+
