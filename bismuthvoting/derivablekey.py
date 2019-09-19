@@ -13,7 +13,7 @@ from Cryptodome.Random import get_random_bytes
 from bismuthvoting.bip39 import BIP39
 
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 FIELD_ORDER = 2 ** 256
@@ -89,31 +89,41 @@ class DerivableKey:
         return DerivableKey(seed=ks + cs)
 
     @classmethod
-    def encrypt(cls, aes_key: bytes, data: str, pad_with_zeroes=False, iv: bytes=None) -> bytes:
+    def encrypt(cls, aes_key: bytes, data: bytes, iv: bytes) -> bytes:
         assert len(aes_key) == 32
-        # Add space to vote option
-        data += " "
-        data = data.encode('utf-8')
-        # Pad to 16 bytes -
-        data = random_padding(data, 16, pad_with_zeros=pad_with_zeroes)
-        # print("padded data", data)
         # AES is stateful, needs one instance per operation
-        if iv is None:
-            # iv is needed for CBC, we use a fixed iv - 16 bytes long - to limit data to transmit by default.
-            iv = "Bismuth BGVP IV.".encode('utf-8')
         aes = AES.new(aes_key, AES.MODE_CBC, iv=iv)
         encrypted = aes.encrypt(data)
         return encrypted
 
     @classmethod
-    def decrypt(cls, aes_key: bytes, data: bytes, iv: bytes=None) -> str:
-        assert len(aes_key) == 32
-        # AES is stateful, needs one instance per operation
+    def encrypt_vote(cls, aes_key: bytes, data: str, pad_with_zeroes=False, iv: bytes=None) -> bytes:
+        """Dedicated method to encrypt vote message"""
+        # Add space to vote option
+        data += " "
+        data = data.encode('utf-8')
+        # Pad to 16 bytes -
+        data = random_padding(data, 16, pad_with_zeros=pad_with_zeroes)
         if iv is None:
             # iv is needed for CBC, we use a fixed iv - 16 bytes long - to limit data to transmit by default.
             iv = "Bismuth BGVP IV.".encode('utf-8')
+        return cls.encrypt(aes_key, data, iv)
+
+    @classmethod
+    def decrypt(cls, aes_key: bytes, data: bytes, iv: bytes) -> bytes:
+        assert len(aes_key) == 32
+        # AES is stateful, needs one instance per operation
         aes = AES.new(aes_key, AES.MODE_CBC, iv=iv)
         clear = aes.decrypt(data)
+        return clear
+
+    @classmethod
+    def decrypt_vote(cls, aes_key: bytes, data: bytes, iv: bytes=None) -> str:
+        """Dedicated method to decrypt vote message"""
+        if iv is None:
+            # iv is needed for CBC, we use a fixed iv - 16 bytes long - to limit data to transmit by default.
+            iv = "Bismuth BGVP IV.".encode('utf-8')
+        clear = cls.decrypt(aes_key, data, iv=iv)
         # print(clear)
         clear, _ = clear.split(b" ")
         return clear.decode("utf-8")

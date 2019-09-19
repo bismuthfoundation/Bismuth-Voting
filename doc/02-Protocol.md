@@ -54,11 +54,12 @@ TODO
 motion_number:b64_encode(encrypted)
 
 AES encryption gives encrypted from (vote option + space + random padding to 16 bytes)   
-
+See 05-AES_Encryption
 
 Notes: Voting app must verify  
 - Motion_number exists and is valid
 - Current date is within (Vote_start_date, Vote_reading_date)
+- Option is a valid option for the motion (invalid options will be discarded but BIS not sent back)
 
 > **initial_vote_txid** is the txid of the vote transaction
 
@@ -79,12 +80,13 @@ TODO
 initial_vote_txidb64_encode(encrypted)
 
 AES encryption gives encrypted from (new vote option + space + random padding to 16 bytes)   
+See 05-AES_Encryption
 
 Notes: Voting app must verify 
 - Initial_vote_txid exists and is a valid bgvp:vote transaction
 - Current date is within (Vote_start_date, Vote_reading_date) of the initial vote motion
 - Current key can decrypt the initial vote
-
+- Option is a valid option for the motion (invalid options will be discarded but BIS not sent back)
 
 Example transaction:  
 ```
@@ -100,7 +102,7 @@ TODO
 **Operation:** bgvp:reveal
 
 **Data:** a string  
-motion_number:b64_encode(motion_key)
+motion_number:b64_encode(binary motion_key)
 
 Notes: Voting app must verify 
 - A valid bgvp:vote transaction exists for that motion

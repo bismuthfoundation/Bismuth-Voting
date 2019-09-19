@@ -38,7 +38,7 @@ def test_encrypt(verbose=False):
             == "fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece"
     )
     # here we pad with zeroes for reproducible tests
-    encrypted = DerivableKey.encrypt(motion_key1a.to_aes_key(), "B", pad_with_zeroes=True)
+    encrypted = DerivableKey.encrypt_vote(motion_key1a.to_aes_key(), "B", pad_with_zeroes=True)
     if verbose:
         print("Encrypted", encrypted)
     assert encrypted == b'{tP\x1dW{\xc8Le[\xfc\xb3\xc9\x1f\xc5\xf3'
@@ -48,7 +48,7 @@ def test_encrypt(verbose=False):
     assert message == "e3RQHVd7yExlW/yzyR/F8w=="
     if verbose:
         # here we pad with random
-        encrypted = DerivableKey.encrypt(motion_key1a.to_aes_key(), "B")
+        encrypted = DerivableKey.encrypt_vote(motion_key1a.to_aes_key(), "B")
         print("Encrypted Random padding ", encrypted)
         message = b64encode(encrypted).decode("utf-8")
         print("Message Random padding", message)
@@ -58,11 +58,11 @@ def test_decrypt(verbose=False):
     aes_key = bytes.fromhex("fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece")
     message = "e3RQHVd7yExlW/yzyR/F8w=="  # test vector, with 0 padding
     message = b64decode(message)
-    clear_text = DerivableKey.decrypt(aes_key, message)
+    clear_text = DerivableKey.decrypt_vote(aes_key, message)
     print("Clear text", clear_text)
     message_random = "o6V4cc5ExWNRzpRx18agkA=="  # Same vote, with random padding
     message_random = b64decode(message_random)
-    clear_text = DerivableKey.decrypt(aes_key, message_random)
+    clear_text = DerivableKey.decrypt_vote(aes_key, message_random)
     print("Clear text random", clear_text)
 
 
