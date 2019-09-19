@@ -19,3 +19,11 @@ npm install webpack --save-dev
 `npx webpack`  
 or  
 `npm run build`
+
+## BIP 39
+
+https://github.com/bitcoinjs/bip39
+
+## eccrypto
+
+https://github.com/bitchan/eccrypto
