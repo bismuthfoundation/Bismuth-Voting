@@ -7,13 +7,10 @@ Tests for DerivableKey and AES encryption/decryption class
 run with pytest -v
 """
 
-# import pytest
-from base64 import b64encode, b64decode
 import sys
-
+from base64 import b64encode, b64decode
 
 sys.path.append("../")
-from bismuthvoting.bip39 import BIP39
 from bismuthvoting.derivablekey import DerivableKey
 
 
@@ -34,14 +31,16 @@ def test_encrypt(verbose=False):
         "motion_1_txid_this_would_be_a_b64_encoded_string"
     )
     assert (
-            motion_key1a.to_aes_key().hex()
-            == "fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece"
+        motion_key1a.to_aes_key().hex()
+        == "fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece"
     )
     # here we pad with zeroes for reproducible tests
-    encrypted = DerivableKey.encrypt_vote(motion_key1a.to_aes_key(), "B", pad_with_zeroes=True)
+    encrypted = DerivableKey.encrypt_vote(
+        motion_key1a.to_aes_key(), "B", pad_with_zeroes=True
+    )
     if verbose:
         print("Encrypted", encrypted)
-    assert encrypted == b'{tP\x1dW{\xc8Le[\xfc\xb3\xc9\x1f\xc5\xf3'
+    assert encrypted == b"{tP\x1dW{\xc8Le[\xfc\xb3\xc9\x1f\xc5\xf3"
     message = b64encode(encrypted).decode("utf-8")
     if verbose:
         print("Message", message)
@@ -55,7 +54,9 @@ def test_encrypt(verbose=False):
 
 
 def test_decrypt(verbose=False):
-    aes_key = bytes.fromhex("fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece")
+    aes_key = bytes.fromhex(
+        "fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece"
+    )
     message = "e3RQHVd7yExlW/yzyR/F8w=="  # test vector, with 0 padding
     message = b64decode(message)
     clear_text = DerivableKey.decrypt_vote(aes_key, message)

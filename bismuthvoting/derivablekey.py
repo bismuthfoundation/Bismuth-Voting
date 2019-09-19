@@ -3,17 +3,16 @@ A DerivableKey class for use with the Bismuth Governance Voting Protocol.
 """
 
 import hmac
-import struct
-from six import int2byte
 from hashlib import sha256, sha512
-from coincurve import PrivateKey
+
 from Cryptodome.Cipher import AES
 from Cryptodome.Random import get_random_bytes
+from coincurve import PrivateKey
+from six import int2byte
 
 from bismuthvoting.bip39 import BIP39
 
-
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 
 FIELD_ORDER = 2 ** 256
@@ -45,10 +44,10 @@ def string_to_int(s):
     return result
 
 
-def random_padding(data: bytes, block_size: int=16, pad_with_zeros=False) -> bytes:
-    padding_len = block_size-len(data)%block_size
+def random_padding(data: bytes, block_size: int = 16, pad_with_zeros=False) -> bytes:
+    padding_len = block_size - len(data) % block_size
     if pad_with_zeros:
-        padding = b'\x00' * padding_len
+        padding = b"\x00" * padding_len
     else:
         padding = get_random_bytes(padding_len)
     return data + padding
@@ -81,9 +80,7 @@ class DerivableKey:
         data = self.to_pubkey().hex() + s
         I = hmac.new(self.seed[32:], data.encode("utf-8"), sha512).digest()
         IL, IR = I[:32], I[32:]
-        ks_int = (
-            string_to_int(IL) + string_to_int(self.seed[:32])
-        ) % FIELD_ORDER
+        ks_int = (string_to_int(IL) + string_to_int(self.seed[:32])) % FIELD_ORDER
         ks = int_to_string(ks_int)
         cs = IR
         return DerivableKey(seed=ks + cs)
@@ -97,16 +94,18 @@ class DerivableKey:
         return encrypted
 
     @classmethod
-    def encrypt_vote(cls, aes_key: bytes, data: str, pad_with_zeroes=False, iv: bytes=None) -> bytes:
+    def encrypt_vote(
+        cls, aes_key: bytes, data: str, pad_with_zeroes=False, iv: bytes = None
+    ) -> bytes:
         """Dedicated method to encrypt vote message"""
         # Add space to vote option
         data += " "
-        data = data.encode('utf-8')
+        data = data.encode("utf-8")
         # Pad to 16 bytes -
         data = random_padding(data, 16, pad_with_zeros=pad_with_zeroes)
         if iv is None:
             # iv is needed for CBC, we use a fixed iv - 16 bytes long - to limit data to transmit by default.
-            iv = "Bismuth BGVP IV.".encode('utf-8')
+            iv = "Bismuth BGVP IV.".encode("utf-8")
         return cls.encrypt(aes_key, data, iv)
 
     @classmethod
@@ -118,11 +117,11 @@ class DerivableKey:
         return clear
 
     @classmethod
-    def decrypt_vote(cls, aes_key: bytes, data: bytes, iv: bytes=None) -> str:
+    def decrypt_vote(cls, aes_key: bytes, data: bytes, iv: bytes = None) -> str:
         """Dedicated method to decrypt vote message"""
         if iv is None:
             # iv is needed for CBC, we use a fixed iv - 16 bytes long - to limit data to transmit by default.
-            iv = "Bismuth BGVP IV.".encode('utf-8')
+            iv = "Bismuth BGVP IV.".encode("utf-8")
         clear = cls.decrypt(aes_key, data, iv=iv)
         # print(clear)
         clear, _ = clear.split(b" ")
@@ -137,5 +136,3 @@ class DerivableKey:
         address_key = master_key.derive(address)
         motion_key = address_key.derive(motion)
         return motion_key
-
-

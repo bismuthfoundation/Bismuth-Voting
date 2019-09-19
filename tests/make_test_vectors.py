@@ -6,12 +6,11 @@ Beware, running this will recreate some test vector json file in data directory.
 Since some vectors use random padding, you'll end up with another test vector set than the official one.
 """
 
-import sys
 import json
-from base64 import b64encode, b64decode
+import sys
+from base64 import b64encode
 
 sys.path.append("../")
-from bismuthvoting.bip39 import BIP39
 from bismuthvoting.derivablekey import DerivableKey
 
 
