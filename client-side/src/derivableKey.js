@@ -51,10 +51,12 @@ DerivableKey.prototype.derive = function derive(s) {
     const IR = I.slice(32);
     //console.log("Seedp", utils.bytesToHex(this.privkey));
     // seedp 95a7ecb56bda5eba808eec2407b418002b824c6c1cb159ec44b8371405629f84
-    const ks = new BN(this.privkey, 16).add(new BN(IL, 16));
-    //console.log("ks", ks.toString('hex'));
+    //const ks = new BN(this.privkey, 16).add(new BN(IL, 16));
+    const ks = new BN(IL, 16).add(new BN(this.privkey, 16));
+    ks_string = ks.toString('hex').slice(-64);  // Slice does the modulo 2**256
+    //console.log("ks", ks_string);
     // ks_hex c5d44637eb43b04bfa07b8cf1272e22d95a740126cd9e1ab7363840f118a9ebf
-    const seed_string = ks.toString('hex') + IR.toString('hex');
+    const seed_string = ks_string + IR.toString('hex');
     //console.log("seed_string", seed_string);
     return new DerivableKey(utils.hexToBytes(seed_string));
     /*
@@ -66,4 +68,14 @@ DerivableKey.prototype.derive = function derive(s) {
     cs = IR
     return DerivableKey(seed=ks + cs)
     */
+
+    /* key_motion 1a
+    IL c1772e0d5ff856e726f511bb9a7dd3a1cabe109838f0df4efe1cf4bb4d4557f5
+seed c5d44637eb43b04bfa07b8cf1272e22d95a740126cd9e1ab7363840f118a9ebf
+ks_hex 874b74454b3c073320fcca8aacf0b5cf606550aaa5cac0fa718078ca5ecff6b4
+Seed1a 874b74454b3c073320fcca8aacf0b5cf606550aaa5cac0fa718078ca5ecff6b43ee220e340fbfdd51d9202c2598f2f8930777c4d146c41a2bf915101a4bd72cb
+AES1a fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece
+*/
+
+
 }
