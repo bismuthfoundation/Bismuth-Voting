@@ -70,4 +70,18 @@ describe("AES Tests", () => {
     const motion_key1b = address_key1.derive("motion_2_txid_this_would_be_a_b64_encoded_string");
     expect(utils.bytesToHex(motion_key1b.to_aes_key())).toBe(motion_aes1bHex);
   });
+  test("AES encrypt Motion1a A", () => {
+    const master_key = new DerivableKey(utils.hexToBytes(testSeedHex));
+    const address_key1 = master_key.derive("Bis_test_address1");
+    const motion_key1a = address_key1.derive("motion_1_txid_this_would_be_a_b64_encoded_string");
+    const encrypted = motion_key1a.encrypt_vote(motion_key1a.to_aes_key(), 'A', true);
+    expect(utils.bytesToHex(encrypted)).toBe("41fea09e3f2e12886c6a24ff73c203d2");
+  });
+  test("AES encrypt Motion1a B", () => {
+    const master_key = new DerivableKey(utils.hexToBytes(testSeedHex));
+    const address_key1 = master_key.derive("Bis_test_address1");
+    const motion_key1a = address_key1.derive("motion_1_txid_this_would_be_a_b64_encoded_string");
+    const encrypted = motion_key1a.encrypt_vote(motion_key1a.to_aes_key(), 'B', true);
+    expect(utils.bytesToHex(encrypted)).toBe("7b74501d577bc84c655bfcb3c91fc5f3");
+  });
 });

@@ -93,6 +93,9 @@ class DerivableKey:
     def encrypt(cls, aes_key: bytes, data: bytes, iv: bytes) -> bytes:
         assert len(aes_key) == 32
         # AES is stateful, needs one instance per operation
+        print("aes key", aes_key.hex())
+        print("aes data", data.hex())
+        print("aes iv", iv.hex())
         aes = AES.new(aes_key, AES.MODE_CBC, iv=iv)
         encrypted = aes.encrypt(data)
         return encrypted

@@ -9,7 +9,7 @@ For client
 
 npm install bip39
 
-For dev use (not sipped)
+For dev use (not shipped)
 
 npm install webpack --save-dev
 

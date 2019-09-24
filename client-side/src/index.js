@@ -35,9 +35,13 @@ function component() {
   var motion_key1a = address_key1.derive("motion_1_txid_this_would_be_a_b64_encoded_string");
   console.log("Seed1a " + utils.bytesToHex(motion_key1a.seed));
   console.log("AES1a " + utils.bytesToHex(motion_key1a.to_aes_key()));
+  var encrypted = motion_key1a.encrypt_vote(motion_key1a.to_aes_key(), 'B', true);
+  console.log("encrypted1a B" + utils.bytesToHex(encrypted));
+  // B 7b74501d577bc84c655bfcb3c91fc5f3  - Message e3RQHVd7yExlW/yzyR/F8w==
+  var encrypted = motion_key1a.encrypt_vote(motion_key1a.to_aes_key(), 'A', true);
+  console.log("encrypted1a A" + utils.bytesToHex(encrypted));
+  // A 41fea09e3f2e12886c6a24ff73c203d2  - Message Qf6gnj8uEohsaiT/c8ID0g==
 
-  // "c5d44637eb43b04bfa07b8cf1272e22d95a740126cd9e1ab7363840f118a9ebf6671d081ea1f89f13aad09c1a92dabd62eb1c0e81b701f8116b7401a30a98867"
-  //console.log("AES1 " + address_key1.to_aes_key().toString('hex'));*/
 
   return element;
 }

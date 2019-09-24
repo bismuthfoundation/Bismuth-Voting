@@ -4,12 +4,16 @@ const eccrypto = require("eccrypto");
 const BN = require('bn.js');
 const createHash = require('create-hash');
 const createHmac = require('create-hmac');
+const aesjs = require('aes-js');
+var utf8 = require('utf8-encoding');
+var encoder = new utf8.TextEncoder();
+var decoder = new utf8.TextDecoder();
 
 const utils = require("./utils.js");
 
 var derivableKey = exports;
 
-derivableKey.version = "0.0.1";
+derivableKey.version = "0.0.2";
 derivableKey.DerivableKey = DerivableKey;
 
 
@@ -79,11 +83,71 @@ DerivableKey.prototype.derive = function derive(s) {
 
     /* key_motion 1a
     IL c1772e0d5ff856e726f511bb9a7dd3a1cabe109838f0df4efe1cf4bb4d4557f5
-seed c5d44637eb43b04bfa07b8cf1272e22d95a740126cd9e1ab7363840f118a9ebf
-ks_hex 874b74454b3c073320fcca8aacf0b5cf606550aaa5cac0fa718078ca5ecff6b4
-Seed1a 874b74454b3c073320fcca8aacf0b5cf606550aaa5cac0fa718078ca5ecff6b43ee220e340fbfdd51d9202c2598f2f8930777c4d146c41a2bf915101a4bd72cb
-AES1a fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece
-*/
+    seed c5d44637eb43b04bfa07b8cf1272e22d95a740126cd9e1ab7363840f118a9ebf
+    ks_hex 874b74454b3c073320fcca8aacf0b5cf606550aaa5cac0fa718078ca5ecff6b4
+    Seed1a 874b74454b3c073320fcca8aacf0b5cf606550aaa5cac0fa718078ca5ecff6b43ee220e340fbfdd51d9202c2598f2f8930777c4d146c41a2bf915101a4bd72cb
+    AES1a fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece
+    */
 
+}
 
+DerivableKey.prototype.encrypt = function encrypt(aes_key, data, iv) {
+    // Generic AES buffer encryption
+
+    //var textBytes = encoder.encode(text_data);
+    /*
+    console.log("aes_hex", aes_key.toString('hex'));
+    console.log("data_hex", data.toString('hex'));
+    console.log("iv_hex", iv.toString('hex'));
+    */
+    /*
+    aes key fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece
+            fdbe119cf50392b483e072af11b6731cfbb457e35e54e811e3f1ca1fae4ceece
+    aes data 42200000000000000000000000000000
+             42200000000000000000000000000000
+    aes iv 4269736d75746820424756502049562e
+           4269736d75746820424756502049562e
+    */
+
+    // var aesCbc = new aesjs.CBC(aes_key, iv);
+    var aesCbc = new aesjs.ModeOfOperation.cbc(aes_key, iv);
+    /*var encryptedBytes = new Uint8Array(data.length);
+    aesCbc.encrypt(data, encryptedBytes);
+    */
+    var encryptedBytes = aesCbc.encrypt(data);
+    return encryptedBytes;
+    /*
+    assert len(aes_key) == 32
+    # AES is stateful, needs one instance per operation
+    aes = AES.new(aes_key, AES.MODE_CBC, iv=iv)
+    encrypted = aes.encrypt(data)
+    return encrypted
+    */
+}
+
+DerivableKey.prototype.encrypt_vote = function encrypt_vote(aes_key, data, pad_with_zeroes=false, iv=null) {
+    // Dedicated method to encrypt vote message
+    if (pad_with_zeroes) {
+        var buffer16 = Buffer.alloc(16); // fills with 0
+    } else {
+        var buffer16 = crypto.randomBytes(16); // "random"
+    }
+    // Add space to vote option
+    var buffer = Buffer.from(data + ' ');
+    buffer = Buffer.concat([buffer, buffer16], 16); // padds to 16
+    //console.log(buffer);
+    if (!iv) {
+        iv = Buffer.from("Bismuth BGVP IV.");
+    }
+    return this.encrypt(aes_key, buffer, iv);
+
+    /*    data += " "
+        data = data.encode("utf-8")
+        # Pad to 16 bytes -
+        data = random_padding(data, 16, pad_with_zeros=pad_with_zeroes)
+        if iv is None:
+            # iv is needed for CBC, we use a fixed iv - 16 bytes long - to limit data to transmit by default.
+            iv = "Bismuth BGVP IV.".encode("utf-8")
+        return cls.encrypt(aes_key, data, iv)
+     */
 }

@@ -39,12 +39,22 @@ def test_encrypt(verbose=False):
         motion_key1a.to_aes_key(), "B", pad_with_zeroes=True
     )
     if verbose:
-        print("Encrypted", encrypted)
+        print("Encrypted motion_key1a B", encrypted.hex())
     assert encrypted == b"{tP\x1dW{\xc8Le[\xfc\xb3\xc9\x1f\xc5\xf3"
     message = b64encode(encrypted).decode("utf-8")
     if verbose:
-        print("Message", message)
+        print("Message B", message)
     assert message == "e3RQHVd7yExlW/yzyR/F8w=="
+
+    encrypted = DerivableKey.encrypt_vote(
+        motion_key1a.to_aes_key(), "A", pad_with_zeroes=True
+    )
+    if verbose:
+        print("Encrypted motion_key1a A", encrypted.hex())
+    message = b64encode(encrypted).decode("utf-8")
+    if verbose:
+        print("Message A", message)
+    assert message == "Qf6gnj8uEohsaiT/c8ID0g=="
     if verbose:
         # here we pad with random
         encrypted = DerivableKey.encrypt_vote(motion_key1a.to_aes_key(), "B")
