@@ -201,3 +201,11 @@ DerivableKey.prototype.decrypt_vote_b64 = function decrypt_vote_b64(b64_string, 
     return Buffer.from(decrypted).toString('ascii');
 }
 
+
+DerivableKey.prototype.reveal_key_b64 = function reveal_key_b64(aes_key=null) {
+    // b64 encoded version of the aes key
+    if (!aes_key) {
+        aes_key = this.to_aes_key();
+    }
+    return Buffer.from(aes_key).toString('base64');
+}

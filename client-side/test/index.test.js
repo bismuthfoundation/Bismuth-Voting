@@ -113,3 +113,30 @@ describe("AES Tests", () => {
     expect(vote).toBe("B");
   });
 });
+
+describe("Key reveal Tests", () => {
+  // We could run all vectors from ../tests/data/votes.json
+  test("Key reveal 1", () => {
+    const aes_key_hex = "4f877e349ff1cec77bd0bfdff32b6c13c109980d273db79bf6a396f67c85f690";
+    const expected_b64_message = "T4d+NJ/xzsd70L/f8ytsE8EJmA0nPbeb9qOW9nyF9pA="
+    const key = new DerivableKey();
+    const message = key.reveal_key_b64(utils.hexToBytes(aes_key_hex));
+    expect(message).toBe(expected_b64_message);
+  });
+  test("Key reveal 1b", () => {
+    // Full test from mnemonic and derivation path
+    const mnemonic = "letter advice cage absurd amount doctor acoustic avoid letter advice cage above";
+    const seed = mnemonicToSeedSync(mnemonic, defaultPassword);
+    const key = new DerivableKey(seed).derive("Bis_test_address1").derive("motion_1_txid_this_would_be_a_b64_encoded_string");
+    const expected_b64_message = "/b4RnPUDkrSD4HKvEbZzHPu0V+NeVOgR4/HKH65M7s4="
+    const message = key.reveal_key_b64();
+    expect(message).toBe(expected_b64_message);
+  });
+  test("Key reveal 2", () => {
+    const aes_key_hex = "39ac5b64f8618cc76c80eb618c4af69c83613b29eec535ab1e1867a2935dd961";
+    const expected_b64_message = "OaxbZPhhjMdsgOthjEr2nINhOynuxTWrHhhnopNd2WE="
+    const key = new DerivableKey();
+    const message = key.reveal_key_b64(utils.hexToBytes(aes_key_hex));
+    expect(message).toBe(expected_b64_message);
+  });
+});
