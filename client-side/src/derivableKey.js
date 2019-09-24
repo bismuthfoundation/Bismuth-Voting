@@ -151,3 +151,8 @@ DerivableKey.prototype.encrypt_vote = function encrypt_vote(aes_key, data, pad_w
         return cls.encrypt(aes_key, data, iv)
      */
 }
+
+DerivableKey.prototype.encrypt_vote_b64 = function encrypt_vote_b64(aes_key, data, pad_with_zeroes=false) {
+    var encrypted = this.encrypt_vote(aes_key, data, pad_with_zeroes)
+    return Buffer.from(encrypted).toString('base64')
+}
