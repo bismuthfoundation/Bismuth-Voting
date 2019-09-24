@@ -98,4 +98,18 @@ describe("AES Tests", () => {
     const b64 = motion_key1a.encrypt_vote_b64(motion_key1a.to_aes_key(), 'B', true);
     expect(b64).toBe("e3RQHVd7yExlW/yzyR/F8w==");
   });
+  test("AES decryptA", () => {
+    const aes_key_hex = "4f877e349ff1cec77bd0bfdff32b6c13c109980d273db79bf6a396f67c85f690";
+    const b64_message = "aP7J10RJnU7oURHP4poemQ=="
+    const key = new DerivableKey();
+    const vote = key.decrypt_vote_b64(utils.hexToBytes(aes_key_hex), b64_message);
+    expect(vote).toBe("A");
+  });
+  test("AES decryptB", () => {
+    const aes_key_hex = "4f877e349ff1cec77bd0bfdff32b6c13c109980d273db79bf6a396f67c85f690";
+    const b64_message = "ohoaXVTBeg/cVutC+tW5zQ=="
+    const key = new DerivableKey();
+    const vote = key.decrypt_vote_b64(utils.hexToBytes(aes_key_hex), b64_message);
+    expect(vote).toBe("B");
+  });
 });

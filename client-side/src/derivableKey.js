@@ -5,9 +5,10 @@ const BN = require('bn.js');
 const createHash = require('create-hash');
 const createHmac = require('create-hmac');
 const aesjs = require('aes-js');
-var utf8 = require('utf8-encoding');
-var encoder = new utf8.TextEncoder();
-var decoder = new utf8.TextDecoder();
+//const bindexOf = require('buffer-indexof');
+//var utf8 = require('utf8-encoding');
+//var encoder = new utf8.TextEncoder();
+//var decoder = new utf8.TextDecoder();
 
 const utils = require("./utils.js");
 
@@ -20,13 +21,30 @@ derivableKey.DerivableKey = DerivableKey;
 function DerivableKey(seed) {
   this.seed = seed;
   // Convert privkey to required format
-  this.privkey = Buffer.from(this.seed.slice(0, 32));
-  this.chainCode = Buffer.from(this.seed.slice(32));
+  if (seed) {
+    this.privkey = Buffer.from(this.seed.slice(0, 32));
+    this.chainCode = Buffer.from(this.seed.slice(32));
+  }
 }
 
 
 function hmacSHA512(key, data) {
   return createHmac('sha512', key).update(data).digest();
+}
+
+
+function splitBuffer(buf,splitBuf,includeDelim){
+// From https://www.npmjs.com/package/buffer-split
+  var search = -1
+  , lines = []
+  , move = includeDelim?splitBuf.length:0
+  ;
+  while((search = bufferIndexOf(buf,splitBuf)) > -1){
+    lines.push(buf.slice(0,search+move));
+    buf = buf.slice(search+splitBuf.length,buf.length);
+  }
+  lines.push(buf);
+  return lines;
 }
 
 //module.exports = DerivableKey
@@ -153,6 +171,26 @@ DerivableKey.prototype.encrypt_vote = function encrypt_vote(aes_key, data, pad_w
 }
 
 DerivableKey.prototype.encrypt_vote_b64 = function encrypt_vote_b64(aes_key, data, pad_with_zeroes=false) {
-    var encrypted = this.encrypt_vote(aes_key, data, pad_with_zeroes)
-    return Buffer.from(encrypted).toString('base64')
+    var encrypted = this.encrypt_vote(aes_key, data, pad_with_zeroes);
+    return Buffer.from(encrypted).toString('base64');
 }
+
+
+DerivableKey.prototype.decrypt = function decrypt(aes_key, data, iv) {
+    // Generic AES buffer decryption
+    var aesCbc = new aesjs.ModeOfOperation.cbc(aes_key, iv);
+    var decryptedBytes = aesCbc.decrypt(data);
+    return decryptedBytes;
+}
+
+DerivableKey.prototype.decrypt_vote_b64 = function decrypt_vote_b64(aes_key, b64_string) {
+    var buffer = new Buffer(b64_string, 'base64');
+    const iv = Buffer.from("Bismuth BGVP IV.");
+    decrypted = this.decrypt(aes_key, buffer, iv);
+    // Split at space
+    decrypted = decrypted.slice(0, decrypted.indexOf(32));
+    //console.log("decrypted", decrypted);
+    //console.log("decrypted hex", Buffer.from(decrypted).toString('ascii'));
+    return Buffer.from(decrypted).toString('ascii');
+}
+
