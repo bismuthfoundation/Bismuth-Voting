@@ -38,6 +38,14 @@ DerivableKey.prototype.to_pubkey = function to_pubkey() {
     */
 }
 
+DerivableKey.prototype.to_aes_key = function to_pubkey() {
+    // Returns sha256 hash of the pubkey, to use as AES key
+    return createHash('sha256').update(this.to_pubkey()).digest();
+    /* pubkey = self.to_pubkey()
+    return sha256(pubkey).digest()
+    */
+}
+
 DerivableKey.prototype.derive = function derive(s) {
     //Derive with given buffer
     var data = Buffer.from(utils.bytesToHex(this.to_pubkey()) + s);

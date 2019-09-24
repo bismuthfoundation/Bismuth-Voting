@@ -31,8 +31,10 @@ function component() {
   console.log("pubkey " + utils.bytesToHex(pubkey));
   var address_key1 = master_key.derive("Bis_test_address1");
   console.log("Seed1 " + utils.bytesToHex(address_key1.seed));
+  console.log("AES1 " + utils.bytesToHex(address_key1.to_aes_key()));
   var motion_key1a = address_key1.derive("motion_1_txid_this_would_be_a_b64_encoded_string");
   console.log("Seed1a " + utils.bytesToHex(motion_key1a.seed));
+  console.log("AES1a " + utils.bytesToHex(motion_key1a.to_aes_key()));
 
   // "c5d44637eb43b04bfa07b8cf1272e22d95a740126cd9e1ab7363840f118a9ebf6671d081ea1f89f13aad09c1a92dabd62eb1c0e81b701f8116b7401a30a98867"
   //console.log("AES1 " + address_key1.to_aes_key().toString('hex'));*/
