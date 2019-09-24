@@ -1,8 +1,10 @@
 const { mnemonicToSeedSync } = require("bip39");
 
-const derivableKey = require("../src/derivableKey.js");
 const utils = require("../src/utils.js");
+const derivableKey = require("../src/derivableKey.js");
 var DerivableKey = derivableKey.DerivableKey;
+const votingtransaction = require("../src/votingtransaction.js");
+var VotingTransaction = votingtransaction.VotingTransaction;
 
 const defaultPassword = "BismuthGVP";
 
@@ -139,4 +141,16 @@ describe("Key reveal Tests", () => {
     const message = key.reveal_key_b64(utils.hexToBytes(aes_key_hex));
     expect(message).toBe(expected_b64_message);
   });
+});
+
+describe("Voting Transaction Tests", () => {
+  // We could run all vectors from ../tests/data/votes.json
+  test("Voting tx", () => {
+  //seed, address, motion_id, motion_txid, motion_address
+    const votingtransaction = new VotingTransaction(utils.hexToBytes(testSeedHex), 'Bis_test_address1', 0, "motion_1_txid_this_would_be_a_b64_encoded_string", "test_motion_address");
+    transaction = votingtransaction.get_vote_transaction('A', 10);
+    console.log(transaction);
+    expect(transaction).toBe(0);
+  });
+
 });
