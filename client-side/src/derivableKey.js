@@ -60,9 +60,10 @@ DerivableKey.prototype.to_pubkey = function to_pubkey() {
     */
 }
 
-DerivableKey.prototype.to_aes_key = function to_pubkey() {
+DerivableKey.prototype.to_aes_key = function to_aes_key() {
     // Returns sha256 hash of the pubkey, to use as AES key
-    return createHash('sha256').update(this.to_pubkey()).digest();
+    if (this.aeskey === undefined) this.aeskey = createHash('sha256').update(this.to_pubkey()).digest();
+    return this.aeskey;
     /* pubkey = self.to_pubkey()
     return sha256(pubkey).digest()
     */
@@ -109,7 +110,7 @@ DerivableKey.prototype.derive = function derive(s) {
 
 }
 
-DerivableKey.prototype.encrypt = function encrypt(aes_key, data, iv) {
+DerivableKey.prototype.encrypt = function encrypt(data, iv, aes_key=null) {
     // Generic AES buffer encryption
 
     //var textBytes = encoder.encode(text_data);
@@ -127,6 +128,9 @@ DerivableKey.prototype.encrypt = function encrypt(aes_key, data, iv) {
            4269736d75746820424756502049562e
     */
 
+    if (!aes_key) {
+        aes_key = this.to_aes_key();
+    }
     // var aesCbc = new aesjs.CBC(aes_key, iv);
     var aesCbc = new aesjs.ModeOfOperation.cbc(aes_key, iv);
     /*var encryptedBytes = new Uint8Array(data.length);
@@ -143,7 +147,7 @@ DerivableKey.prototype.encrypt = function encrypt(aes_key, data, iv) {
     */
 }
 
-DerivableKey.prototype.encrypt_vote = function encrypt_vote(aes_key, data, pad_with_zeroes=false, iv=null) {
+DerivableKey.prototype.encrypt_vote = function encrypt_vote(data, pad_with_zeroes=false, iv=null, aes_key=null) {
     // Dedicated method to encrypt vote message
     if (pad_with_zeroes) {
         var buffer16 = Buffer.alloc(16); // fills with 0
@@ -157,7 +161,7 @@ DerivableKey.prototype.encrypt_vote = function encrypt_vote(aes_key, data, pad_w
     if (!iv) {
         iv = Buffer.from("Bismuth BGVP IV.");
     }
-    return this.encrypt(aes_key, buffer, iv);
+    return this.encrypt(buffer, iv, aes_key);
 
     /*    data += " "
         data = data.encode("utf-8")
@@ -170,23 +174,26 @@ DerivableKey.prototype.encrypt_vote = function encrypt_vote(aes_key, data, pad_w
      */
 }
 
-DerivableKey.prototype.encrypt_vote_b64 = function encrypt_vote_b64(aes_key, data, pad_with_zeroes=false) {
-    var encrypted = this.encrypt_vote(aes_key, data, pad_with_zeroes);
+DerivableKey.prototype.encrypt_vote_b64 = function encrypt_vote_b64(data, pad_with_zeroes=false, aes_key=null) {
+    var encrypted = this.encrypt_vote(data, pad_with_zeroes, null, aes_key);
     return Buffer.from(encrypted).toString('base64');
 }
 
 
-DerivableKey.prototype.decrypt = function decrypt(aes_key, data, iv) {
+DerivableKey.prototype.decrypt = function decrypt(data, iv, aes_key=null) {
     // Generic AES buffer decryption
+    if (!aes_key) {
+        aes_key = this.to_aes_key();
+    }
     var aesCbc = new aesjs.ModeOfOperation.cbc(aes_key, iv);
     var decryptedBytes = aesCbc.decrypt(data);
     return decryptedBytes;
 }
 
-DerivableKey.prototype.decrypt_vote_b64 = function decrypt_vote_b64(aes_key, b64_string) {
+DerivableKey.prototype.decrypt_vote_b64 = function decrypt_vote_b64(b64_string, aes_key=null) {
     var buffer = new Buffer(b64_string, 'base64');
     const iv = Buffer.from("Bismuth BGVP IV.");
-    decrypted = this.decrypt(aes_key, buffer, iv);
+    decrypted = this.decrypt(buffer, iv, aes_key);
     // Split at space
     decrypted = decrypted.slice(0, decrypted.indexOf(32));
     //console.log("decrypted", decrypted);

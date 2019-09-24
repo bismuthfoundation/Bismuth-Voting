@@ -74,42 +74,42 @@ describe("AES Tests", () => {
     const master_key = new DerivableKey(utils.hexToBytes(testSeedHex));
     const address_key1 = master_key.derive("Bis_test_address1");
     const motion_key1a = address_key1.derive("motion_1_txid_this_would_be_a_b64_encoded_string");
-    const encrypted = motion_key1a.encrypt_vote(motion_key1a.to_aes_key(), 'A', true);
+    const encrypted = motion_key1a.encrypt_vote('A', true);
     expect(utils.bytesToHex(encrypted)).toBe("41fea09e3f2e12886c6a24ff73c203d2");
   });
   test("AES encrypt Motion1a B", () => {
     const master_key = new DerivableKey(utils.hexToBytes(testSeedHex));
     const address_key1 = master_key.derive("Bis_test_address1");
     const motion_key1a = address_key1.derive("motion_1_txid_this_would_be_a_b64_encoded_string");
-    const encrypted = motion_key1a.encrypt_vote(motion_key1a.to_aes_key(), 'B', true);
+    const encrypted = motion_key1a.encrypt_vote('B', true);
     expect(utils.bytesToHex(encrypted)).toBe("7b74501d577bc84c655bfcb3c91fc5f3");
   });
   test("AES encrypt+b64 Motion1a A", () => {
     const master_key = new DerivableKey(utils.hexToBytes(testSeedHex));
     const address_key1 = master_key.derive("Bis_test_address1");
     const motion_key1a = address_key1.derive("motion_1_txid_this_would_be_a_b64_encoded_string");
-    const b64 = motion_key1a.encrypt_vote_b64(motion_key1a.to_aes_key(), 'A', true);
+    const b64 = motion_key1a.encrypt_vote_b64('A', true);
     expect(b64).toBe("Qf6gnj8uEohsaiT/c8ID0g==");
   });
   test("AES encrypt+b64 Motion1a B", () => {
     const master_key = new DerivableKey(utils.hexToBytes(testSeedHex));
     const address_key1 = master_key.derive("Bis_test_address1");
     const motion_key1a = address_key1.derive("motion_1_txid_this_would_be_a_b64_encoded_string");
-    const b64 = motion_key1a.encrypt_vote_b64(motion_key1a.to_aes_key(), 'B', true);
+    const b64 = motion_key1a.encrypt_vote_b64('B', true);
     expect(b64).toBe("e3RQHVd7yExlW/yzyR/F8w==");
   });
   test("AES decryptA", () => {
     const aes_key_hex = "4f877e349ff1cec77bd0bfdff32b6c13c109980d273db79bf6a396f67c85f690";
     const b64_message = "aP7J10RJnU7oURHP4poemQ=="
     const key = new DerivableKey();
-    const vote = key.decrypt_vote_b64(utils.hexToBytes(aes_key_hex), b64_message);
+    const vote = key.decrypt_vote_b64(b64_message, utils.hexToBytes(aes_key_hex));
     expect(vote).toBe("A");
   });
   test("AES decryptB", () => {
     const aes_key_hex = "4f877e349ff1cec77bd0bfdff32b6c13c109980d273db79bf6a396f67c85f690";
     const b64_message = "ohoaXVTBeg/cVutC+tW5zQ=="
     const key = new DerivableKey();
-    const vote = key.decrypt_vote_b64(utils.hexToBytes(aes_key_hex), b64_message);
+    const vote = key.decrypt_vote_b64(b64_message, utils.hexToBytes(aes_key_hex));
     expect(vote).toBe("B");
   });
 });

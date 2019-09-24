@@ -35,11 +35,11 @@ function component() {
   var motion_key1a = address_key1.derive("motion_1_txid_this_would_be_a_b64_encoded_string");
   console.log("Seed1a " + utils.bytesToHex(motion_key1a.seed));
   console.log("AES1a " + utils.bytesToHex(motion_key1a.to_aes_key()));
-  var encrypted = motion_key1a.encrypt_vote(motion_key1a.to_aes_key(), 'B', true);
+  var encrypted = motion_key1a.encrypt_vote('B', true);
   console.log("encrypted1a B" + utils.bytesToHex(encrypted));
   console.log("encrypted1a B b64" , Buffer.from(encrypted).toString('base64'));
   // B 7b74501d577bc84c655bfcb3c91fc5f3  - Message e3RQHVd7yExlW/yzyR/F8w==
-  var encrypted = motion_key1a.encrypt_vote(motion_key1a.to_aes_key(), 'A', true);
+  var encrypted = motion_key1a.encrypt_vote('A', true);
   console.log("encrypted1a A" + utils.bytesToHex(encrypted));
   console.log("encrypted1a A b64" , Buffer.from(encrypted).toString('base64'));
   // A A41fea09e3f2e12886c6a24ff73c203d2 -  Message Qf6gnj8uEohsaiT/c8ID0g==
