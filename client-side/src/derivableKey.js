@@ -14,7 +14,7 @@ const utils = require("./utils.js");
 
 var derivableKey = exports;
 
-derivableKey.version = "0.0.2";
+derivableKey.version = "0.0.3";
 derivableKey.DerivableKey = DerivableKey;
 
 
