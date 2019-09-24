@@ -29,8 +29,9 @@ function component() {
   console.log("Master seed h2", utils.bytesToHex(master_key.seed));
   var pubkey = master_key.to_pubkey()
   console.log("pubkey " + utils.bytesToHex(pubkey));
-  //address_key1 = master_key.derive("Bis_test_address1");
-  //console.log("Seed1 " + utils.bytesToHex(address_key1.seed));
+  var address_key1 = master_key.derive("Bis_test_address1");
+  console.log("Seed1 " + utils.bytesToHex(address_key1.seed));
+  // "c5d44637eb43b04bfa07b8cf1272e22d95a740126cd9e1ab7363840f118a9ebf6671d081ea1f89f13aad09c1a92dabd62eb1c0e81b701f8116b7401a30a98867"
   //console.log("AES1 " + address_key1.to_aes_key().toString('hex'));*/
 
   return element;

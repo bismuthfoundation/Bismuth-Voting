@@ -78,10 +78,14 @@ class DerivableKey:
     def derive(self, s: str) -> "DerivableKey":
         """Derive with given buffer"""
         data = self.to_pubkey().hex() + s
+        # print("data", data.encode("utf-8").hex())
         I = hmac.new(self.seed[32:], data.encode("utf-8"), sha512).digest()
         IL, IR = I[:32], I[32:]
+        # print("IL", IL.hex())
+        # print("seed", self.seed[:32].hex())
         ks_int = (string_to_int(IL) + string_to_int(self.seed[:32])) % FIELD_ORDER
         ks = int_to_string(ks_int)
+        # print("ks_hex", ks.hex())
         cs = IR
         return DerivableKey(seed=ks + cs)
 
