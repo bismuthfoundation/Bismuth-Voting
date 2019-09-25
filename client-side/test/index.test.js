@@ -180,15 +180,34 @@ describe("Voting Transaction Tests", () => {
 });
 
 describe("BisUrl Tests", () => {
-  // We could run all vectors from ../tests/data/votes.json
   test("checksum 1", () => {
-    const string = "sample test string"
-    const check = checksum(string)
+    const string = "sample test string";
+    const check = checksum(string);
     expect(check).toBe("%<5v~^9@2P5<8#Yuq@P;");
   });
   test("checksum 2", () => {
-    const string = "bis://pay/01234567890/10.00/operation/openfield/"
-    const check = checksum(string)
+    const string = "bis://pay/01234567890/10.00/operation/openfield/";
+    const check = checksum(string);
     expect(check).toBe("Lm<_mNdW3+`@CQs1Aibm");
+  });
+  test("Bisurl 1", () => {
+    const transaction = {
+        "recipient": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01",
+        "amount": 0,
+        "operation": "op:test",
+        "openfield": "openfield_data"};
+    const expected = "bis://pay/abcdef0123456789abcdef0123456789abcdef0123456789abcdef01/0/Z*V$vWpi`/Z*XO9W@%+?WM5=qbYT/c89#&9#h%MeO(h*k}9I|";
+    const check = bisUrl(transaction);
+    expect(check).toBe(expected);
+  });
+  test("Bisurl 2", () => {
+    const transaction = {
+        "recipient": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef01",
+        "amount": 0,
+        "operation": "bgvp:vote",
+        "openfield": "0:8ZmHckBjxb0DB8skooVAMw=="};
+    const expected = "bis://pay/abcdef0123456789abcdef0123456789abcdef0123456789abcdef01/0/VrO=6I(Bb#Wd/FgiF|ZAfElLTY$oFhoK)b8ByJRzXd7Jv{/e&RE#IbWW*)0CtVGcN-=";
+    const check = bisUrl(transaction);
+    expect(check).toBe(expected);
   });
 });
