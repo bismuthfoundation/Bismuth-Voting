@@ -3,9 +3,18 @@ var DerivableKey = derivableKey.DerivableKey;
 
 var votingtransaction = exports;
 
-votingtransaction.version = "0.0.1";
+votingtransaction.version = "0.0.2";
 votingtransaction.VotingTransaction = VotingTransaction;
 
+votingtransaction.bisurl = bisurl;
+votingtransaction.checksum = checksum;
+
+// TODO: bisurl functions could be in a separate module for other uses.
+
+function checksum(string) {
+    //  checksum for bisurl
+    return "TODO";
+}
 
 function bisurl(transaction) {
     //  Assemble a bis url from json transaction data

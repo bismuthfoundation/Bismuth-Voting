@@ -5,6 +5,8 @@ const derivableKey = require("../src/derivableKey.js");
 var DerivableKey = derivableKey.DerivableKey;
 const votingtransaction = require("../src/votingtransaction.js");
 var VotingTransaction = votingtransaction.VotingTransaction;
+var checksum = votingtransaction.checksum;
+var bisurl = votingtransaction.bisurl;
 
 const defaultPassword = "BismuthGVP";
 
@@ -172,5 +174,19 @@ describe("Voting Transaction Tests", () => {
     const key = new DerivableKey(seed).derive("Bis_test_address1").derive("motion_1_txid_this_would_be_a_b64_encoded_string");
     vote = key.decrypt_vote_b64(message);
     expect(vote).toBe("B");
+  });
+});
+
+describe("BisUrl Tests", () => {
+  // We could run all vectors from ../tests/data/votes.json
+  test("checksum 1", () => {
+    const string = "sample test string"
+    const check = checksum(string)
+    expect(check).toBe("%<5v~^9@2P5<8#Yuq@P;");
+  });
+  test("checksum 2", () => {
+    const string = "bis://pay/01234567890/10.00/operation/openfield/"
+    const check = checksum(string)
+    expect(check).toBe("Lm<_mNdW3+`@CQs1Aibm");
   });
 });
