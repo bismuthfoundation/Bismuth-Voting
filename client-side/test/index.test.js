@@ -4,9 +4,7 @@ const utils = require("../src/utils");
 const { DerivableKey } = require("../src/DerivableKey");
 const { VotingTransaction } = require("../src/VotingTransaction");
 
-const bisurl = require("../src/bisurl.js");
-var bisUrl = bisurl.bisUrl;
-var checksum = bisurl.checksum;
+const { bisUrl, checksum } = require("../src/bisurl");
 
 const DEFAULT_PASSWORD = "BismuthGVP";
 
