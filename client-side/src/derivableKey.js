@@ -33,6 +33,7 @@ function hmacSHA512(key, data) {
 }
 
 
+/*
 function splitBuffer(buf,splitBuf,includeDelim){
 // From https://www.npmjs.com/package/buffer-split
   var search = -1
@@ -46,6 +47,7 @@ function splitBuffer(buf,splitBuf,includeDelim){
   lines.push(buf);
   return lines;
 }
+*/
 
 //module.exports = DerivableKey
 
@@ -157,7 +159,7 @@ DerivableKey.prototype.encrypt_vote = function encrypt_vote(data, pad_with_zeroe
     // Add space to vote option
     var buffer = Buffer.from(data + ' ');
     buffer = Buffer.concat([buffer, buffer16], 16); // padds to 16
-    //console.log(buffer);
+    // console.log("Buffer", buffer);
     if (!iv) {
         iv = Buffer.from("Bismuth BGVP IV.");
     }
@@ -191,7 +193,7 @@ DerivableKey.prototype.decrypt = function decrypt(data, iv, aes_key=null) {
 }
 
 DerivableKey.prototype.decrypt_vote_b64 = function decrypt_vote_b64(b64_string, aes_key=null) {
-    var buffer = new Buffer(b64_string, 'base64');
+    var buffer = Buffer.from(b64_string, 'base64');
     const iv = Buffer.from("Bismuth BGVP IV.");
     decrypted = this.decrypt(buffer, iv, aes_key);
     // Split at space

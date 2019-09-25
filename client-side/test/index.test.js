@@ -145,12 +145,32 @@ describe("Key reveal Tests", () => {
 
 describe("Voting Transaction Tests", () => {
   // We could run all vectors from ../tests/data/votes.json
-  test("Voting tx", () => {
-  //seed, address, motion_id, motion_txid, motion_address
+  test("Voting tx 1", () => {
+    //seed, address, motion_id, motion_txid, motion_address
     const votingtransaction = new VotingTransaction(utils.hexToBytes(testSeedHex), 'Bis_test_address1', 0, "motion_1_txid_this_would_be_a_b64_encoded_string", "test_motion_address");
     transaction = votingtransaction.get_vote_transaction('A', 10);
-    console.log(transaction);
-    expect(transaction).toBe(0);
+    // console.log(transaction);
+    expect(transaction['amount']).toBe(10);
+    expect(transaction['recipient']).toBe("test_motion_address");
+    expect(transaction['operation']).toBe("bgvp:vote");
+    message = transaction["openfield"].split(":")[1];
+    const seed = mnemonicToSeedSync(testMnemonic, defaultPassword);
+    const key = new DerivableKey(seed).derive("Bis_test_address1").derive("motion_1_txid_this_would_be_a_b64_encoded_string");
+    vote = key.decrypt_vote_b64(message);
+    expect(vote).toBe("A");
   });
-
+  test("Voting tx 2", () => {
+    //seed, address, motion_id, motion_txid, motion_address
+    const votingtransaction = new VotingTransaction(utils.hexToBytes(testSeedHex), 'Bis_test_address1', 0, "motion_1_txid_this_would_be_a_b64_encoded_string", "test_motion_address");
+    transaction = votingtransaction.get_vote_transaction('B', 101);
+    // console.log(transaction);
+    expect(transaction['amount']).toBe(101);
+    expect(transaction['recipient']).toBe("test_motion_address");
+    expect(transaction['operation']).toBe("bgvp:vote");
+    message = transaction["openfield"].split(":")[1];
+    const seed = mnemonicToSeedSync(testMnemonic, defaultPassword);
+    const key = new DerivableKey(seed).derive("Bis_test_address1").derive("motion_1_txid_this_would_be_a_b64_encoded_string");
+    vote = key.decrypt_vote_b64(message);
+    expect(vote).toBe("B");
+  });
 });
