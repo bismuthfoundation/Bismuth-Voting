@@ -1,25 +1,12 @@
 const derivableKey = require("./derivableKey.js");
 var DerivableKey = derivableKey.DerivableKey;
+const bisurl = require("./bisurl.js");
+var bisUrl = bisurl.bisUrl;
 
 var votingtransaction = exports;
 
 votingtransaction.version = "0.0.2";
 votingtransaction.VotingTransaction = VotingTransaction;
-
-votingtransaction.bisurl = bisurl;
-votingtransaction.checksum = checksum;
-
-// TODO: bisurl functions could be in a separate module for other uses.
-
-function checksum(string) {
-    //  checksum for bisurl
-    return "TODO";
-}
-
-function bisurl(transaction) {
-    //  Assemble a bis url from json transaction data
-    return "TODO";
-}
 
 
 function VotingTransaction(seed, address, motion_id, motion_txid, motion_address) {
@@ -41,7 +28,7 @@ VotingTransaction.prototype.get_vote_transaction = function get_vote_transaction
 
     transaction['openfield'] = this.motion_id.toString() + ":" + this.key.encrypt_vote_b64(vote_option);
 
-    transaction['bis_url'] = bisurl(transaction);
+    transaction['bis_url'] = bisUrl(transaction);
 
     return transaction;
 }

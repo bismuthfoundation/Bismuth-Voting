@@ -5,8 +5,10 @@ const derivableKey = require("../src/derivableKey.js");
 var DerivableKey = derivableKey.DerivableKey;
 const votingtransaction = require("../src/votingtransaction.js");
 var VotingTransaction = votingtransaction.VotingTransaction;
-var checksum = votingtransaction.checksum;
-var bisurl = votingtransaction.bisurl;
+
+const bisurl = require("../src/bisurl.js");
+var bisUrl = bisurl.bisUrl;
+var checksum = bisurl.checksum;
 
 const defaultPassword = "BismuthGVP";
 
