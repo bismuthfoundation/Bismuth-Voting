@@ -1,9 +1,3 @@
-var utils = exports;
-
-utils.version = "0.0.1";
-utils.hexToBytes = hexToBytes;
-utils.bytesToHex = bytesToHex;
-
 // implementation from crypto-js
 function hexToBytes(hex) {
     for (var bytes = [], c = 0; c < hex.length; c += 2)
@@ -20,4 +14,10 @@ function bytesToHex(bytes) {
         hex.push((current & 0xF).toString(16));
     }
     return hex.join("");
+}
+
+module.exports = {
+    version: "0.0.1",
+    hexToBytes,
+    bytesToHex
 }
