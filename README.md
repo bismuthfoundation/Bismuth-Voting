@@ -6,7 +6,7 @@ WIP
 
 ## Voting Helper
 
-See the [Current voting helper POC](https://bismuthfoundation.github.io/Bismuth-Voting/client-side/dist/)
+See the [Current voting helper POC](https://bismuthfoundation.github.io/Bismuth-Voting/client-side/dist/index.html)
 
 ## FAQ 
 
