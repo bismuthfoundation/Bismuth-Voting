@@ -48,6 +48,7 @@
               Generate
             </button>
           </div>
+          <br /><div id="master-message" class="block text-sm "></div>
         </div>
         <div class="mb-8">
           <label
@@ -67,12 +68,12 @@
             Vote for motion BVGP-1
           </p>
           <div class="flex flex-wrap text-center">
-            <div
+            <div data-id="A"
               class="flex-1 p-4 bg-gray-200 rounded hover:bg-gray-300 shadow mb-4 min-w-full sm:min-w-0 sm:mr-2"
             >
               BGV-01/A
             </div>
-            <div
+            <div  data-id="B"
               class="flex-1 p-4 bg-gray-200 rounded hover:bg-gray-300 shadow mb-4 min-w-full sm:min-w-0 sm:ml-2"
             >
               BGV-01/B
@@ -94,12 +95,16 @@
         </div>
       </div>
       <div class="text-center">
-        <button
+        <button id="generate-bis"
           class="bg-purple-800 hover:bg-purple-700 text-white font-bold py-2 px-4 border-b-4 border-purple-900 hover:border-purple-800 rounded"
         >
           Generate BIS URL
         </button>
       </div>
     </div>
+  <div class="container mx-auto font-sans p-4">
+      <div class="text-center my-8" id="result">
+      </div>
+  </div>
   </body>
 </html>
