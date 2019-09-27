@@ -17,8 +17,8 @@ const MOTION_TXID = "motion_1_txid_this_would_be_a_b64_encoded_string"; // hardc
 const MOTION_ADDRESS = "test_motion_address"; // hardcoded motion address for the time being
 
 // TODO: to be used to check whether the related action is allowed. (hardcoded for first vote)
-const START_VOTE_TIMESTAMP = 0;
-const END_VOTE_TIMESTAMP = 0;
+const START_VOTE_TIMESTAMP = 0;  // from START_VOTE_TIMESTAMP to END_VOTE_TIMESTAMP user can send a vote
+const END_VOTE_TIMESTAMP = 0;    // from END_VOTE_TIMESTAMP to END_REVEAL_TIMESTAMP user can reveal their votes
 const END_REVEAL_TIMESTAMP = 0;
 
 
@@ -32,11 +32,10 @@ function generate_seed() {
 
 function generate_bis() {
 
-    // TODO: check master mnemonic is ok
     const mnemonic = document.querySelector('#master-key').value;
     // TODO: block if empty or less than 12 words
     const valid = bip39.validateMnemonic(mnemonic);
-    // TODO: If valid if false, then warn the user but go on anyway.
+    // TODO: If valid is false, then warn the user but go on anyway.
     // mnemonic created by a BIP39 compatible tool will validate, but we have to account for other generators to be safe.
     console.log("Valid mnemonic:", valid);
 
