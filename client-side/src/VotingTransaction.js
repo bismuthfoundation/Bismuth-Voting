@@ -26,7 +26,20 @@ VotingTransaction.prototype.get_vote_transaction = function (vote_option, vote_a
   return transaction;
 }
 
+VotingTransaction.prototype.get_reveal_transaction = function () {
+  // Returns transaction json, including bisurl, for given path and option
+
+  transaction = { "amount": 0, "recipient": this.motion_address, "operation": "bgvp:reveal" }
+
+  transaction['openfield'] = this.motion_id.toString() + ":" +  this.key.reveal_key_b64();
+
+  transaction['bis_url'] = bisUrl(transaction);
+
+  return transaction;
+}
+
+
 module.exports = {
-  version: "0.0.1",
+  version: "0.0.2",
   VotingTransaction
 };
