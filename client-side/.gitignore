@@ -3,3 +3,5 @@ npm-debug.log
 package-lock.json
 yarn.lock
 .vscode/*
+BundleAnalyser.stats.json
+report.html
