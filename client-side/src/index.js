@@ -44,33 +44,45 @@ function displayMessage(id, type, show = true) {
 function getTabsContent(transaction, seed, address, aes_key, voting_key) {
   console.log(transaction.bis_url);
   return `
-  <div id="bis-url-tab" class=" tab-content">
+  <div id="bis-url-tab" class="tab-content">
     Send the following BisUrl from the related wallet
-    <textarea readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded">${
+    <textarea id="bis-url-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded">${
       transaction.bis_url
     }</textarea>
+    <div class="flex justify-end mt-4">
+    <button data-id="bis-url" class="copy text-xs hover:bg-purple-200 font-bold text-purple-800 px-2 rounded">Copy to clipboard</button>
+    </div>
   </div>
   <div id="raw-txn-tab" class="hidden tab-content">
     If your wallet does not support the bisurl feature, you can send the vote transaction by pasting the following info:
-    <textarea readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
+    <textarea id="raw-txn-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 recipient: ${transaction.recipient}
 amount: ${transaction.amount}
 operation: ${transaction.operation}
 openfield/data: ${transaction.openfield}</textarea>
+<div class="flex justify-end mt-4">
+<button data-id="raw-txn" class="copy text-xs hover:bg-purple-200 font-bold text-purple-800 px-2 rounded">Copy to clipboard</button>
+</div>
   </div>
   <div id="pawer-tab" class="hidden tab-content">
     If you're using Pawer, copy and paste this command to send your vote: <br/>
-    <textarea readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
+    <textarea id="pawer-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 pawer operation ${transaction.operation} ${transaction.recipient} ${
     transaction.amount
   } ${transaction.openfield}</textarea>
+  <div class="flex justify-end mt-4">
+    <button data-id="pawer" class="copy text-xs hover:bg-purple-200 font-bold text-purple-800 px-2 rounded">Copy to clipboard</button>
+    </div>
   </div>
   <div id="advanced-tab" class="hidden tab-content">
-    <textarea readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
+    <textarea id="advanced-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 Master 512 bits Seed: ${seed.toString("hex")}
 Derivation path: m/${address}/${MOTION_TXID}
 Voting key: ${utils.bytesToHex(voting_key.seed)}
 AES Key: ${utils.bytesToHex(aes_key)}</textarea>
+<div class="flex justify-end mt-4">
+<button data-id="advanced" class="copy text-xs hover:bg-purple-200 font-bold text-purple-800 px-2 rounded">Copy to clipboard</button>
+</div>
   </div>
   `;
 }
@@ -147,6 +159,7 @@ function generate_vote() {
   console.log(transaction);
 
   document.querySelector("#results-wrap").classList.remove("hidden");
+
   // reset tabs
   Array.from(document.querySelectorAll(".tabs")).forEach(otherTab => {
     otherTab.classList.remove(...tabsActiveClasses);
@@ -162,6 +175,14 @@ function generate_vote() {
     aes_key,
     voting_key
   );
+  // COPY TO CLIPBOARD
+  Array.from(document.querySelectorAll("button.copy")).forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tAEl = document.querySelector(`textarea#${btn.dataset.id}-data`);
+      tAEl.select();
+      document.execCommand("copy");
+    });
+  });
 }
 
 function generate_reveal() {
