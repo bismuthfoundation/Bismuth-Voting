@@ -1,91 +1,129 @@
 // import _ from 'lodash';
-const bip39 = require('bip39');
+const bip39 = require("bip39");
 // const crypto = require("crypto");
 // const eccrypto = require("eccrypto");
 
-const { DerivableKey, version: derivableKeyVersion } = require("./DerivableKey");
+const {
+  DerivableKey,
+  version: derivableKeyVersion
+} = require("./DerivableKey");
 const { VotingTransaction } = require("./VotingTransaction");
 
 const utils = require("./utils");
 
-const TEST_SEED_HEX = "95a7ecb56bda5eba808eec2407b418002b824c6c1cb159ec44b8371405629f8429419e98e1b67fc6367368f5d82871a501bbc655a62d31e8391411d7a6e74b86";
-const DEFAULT_PASSWORD = 'BismuthGVP';
+const TEST_SEED_HEX =
+  "95a7ecb56bda5eba808eec2407b418002b824c6c1cb159ec44b8371405629f8429419e98e1b67fc6367368f5d82871a501bbc655a62d31e8391411d7a6e74b86";
+const DEFAULT_PASSWORD = "BismuthGVP";
 
-
-const MOTION_ID = 1;  // hardcoded motion id for the time being
+const MOTION_ID = 1; // hardcoded motion id for the time being
 const MOTION_TXID = "motion_1_txid_this_would_be_a_b64_encoded_string"; // hardcoded motion txid for the time being
 const MOTION_ADDRESS = "test_motion_address"; // hardcoded motion address for the time being
 
 // TODO: to be used to check whether the related action is allowed. (hardcoded for first vote)
-const START_VOTE_TIMESTAMP = 0;  // from START_VOTE_TIMESTAMP to END_VOTE_TIMESTAMP user can send a vote
-const END_VOTE_TIMESTAMP = 0;    // from END_VOTE_TIMESTAMP to END_REVEAL_TIMESTAMP user can reveal their votes
+const START_VOTE_TIMESTAMP = 0; // from START_VOTE_TIMESTAMP to END_VOTE_TIMESTAMP user can send a vote
+const END_VOTE_TIMESTAMP = 0; // from END_VOTE_TIMESTAMP to END_REVEAL_TIMESTAMP user can reveal their votes
 const END_REVEAL_TIMESTAMP = 0;
 
 /**
  * Utility to display error/warning message
  * @param {string} id of the field
- * @param {'error'|'message'|'warning'} type 
+ * @param {'error'|'message'|'warning'} type
  * @param {boolean} show
  */
 function displayMessage(id, type, show = true) {
   const el = document.querySelector(`#${id}-${type}`);
   if (el) {
-    if (show) el.classList.remove('hidden');
-    else el.classList.add('hidden');
+    if (show) el.classList.remove("hidden");
+    else el.classList.add("hidden");
   }
+}
+
+function getTabsContent(transaction, seed, address, aes_key, voting_key) {
+  return `
+  <div id="bis-url-tab" class=" tab-content">
+    Send the following BisUrl from the related wallet
+    <pre>${transaction.bis_url}</pre>
+  </div>
+  <div id="raw-txn-tab" class="hidden tab-content">
+    If your wallet does not support the bisurl feature, you can send the vote transaction by pasting the following info:
+    <pre>
+recipient: ${transaction.recipient}
+amount: ${transaction.amount}
+operation: ${transaction.operation}
+openfield/data: ${transaction.openfield}
+    </pre>
+  </div>
+  <div id="pawer-tab" class="hidden tab-content">
+    If you're using Pawer, copy and paste this command to send your vote: <br/>
+    <pre>
+pawer operation ${transaction.operation} ${transaction.recipient} ${
+    transaction.amount
+  } ${transaction.openfield}
+    </pre>
+  </div>
+  <div id="advanced-tab" class="hidden tab-content">
+    <pre>
+Master 512 bits Seed: ${seed.toString("hex")}
+Derivation path: m/${address}/${MOTION_TXID}
+Voting key: ${utils.bytesToHex(voting_key.seed)}
+AES Key: ${utils.bytesToHex(aes_key)}
+    </pre>
+  </div>
+  `;
 }
 
 let vote;
 
-
 function generate_seed() {
   // user is brand new and had no prior seed, we generate and fill it for him
-  const mnemonic = bip39.generateMnemonic(128);  // 128 is the entropy. can be 128 to 256 - multiple of 32. 128 gives 12 words, easier for the user.
-  const element = document.querySelector('#master-key');
+  const mnemonic = bip39.generateMnemonic(128); // 128 is the entropy. can be 128 to 256 - multiple of 32. 128 gives 12 words, easier for the user.
+  const element = document.querySelector("#master-key");
   element.value = mnemonic;
-  displayMessage('master-key', 'message', true);
+  displayMessage("master-key", "message", true);
+  displayMessage("master-key", "error", false);
 }
 
 function generate_vote() {
-
   // TODO: check timestamps
 
-  const mnemonic = document.querySelector('#master-key').value;
+  const mnemonic = document.querySelector("#master-key").value;
   // block if empty or less than 12 words
-  if (!mnemonic || mnemonic.split(' ').length < 12) {
-    displayMessage('master-key', 'error');
+  if (!mnemonic || mnemonic.split(" ").length < 12) {
+    displayMessage("master-key", "error");
     return;
   }
   const valid = bip39.validateMnemonic(mnemonic);
   // mnemonic created by a BIP39 compatible tool will validate, but we have to account for other generators to be safe.
   if (!valid) {
     // If valid is false, then warn the user but go on anyway.
-    displayMessage('master-key', 'warning');
+    displayMessage("master-key", "warning");
   }
-  console.log("Valid mnemonic:", valid);
+  // console.log("Valid mnemonic:", valid);
 
-  const address = document.querySelector('#wallet-address').value.trim();
+  const address = document.querySelector("#wallet-address").value.trim();
   // trim address and validate, give feedback to user if invalid
   // A valid bis address matches either one of these regexps:
   // RE_RSA_ADDRESS "^[abcdef0123456789]{56}$"
   // RE_ECDSA_ADDRESS "^Bis1[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{28,52}$"
   // We can use "Bis_test_address1" - that does not validate - to test the GUI with test vectors
   const rsaAddressMatch = address.match(/^[abcdef0123456789]{56}$/);
-  const ecdsaAddressMatch = address.match(/^Bis1[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{28,52}$/);
+  const ecdsaAddressMatch = address.match(
+    /^Bis1[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{28,52}$/
+  );
   if (!(rsaAddressMatch || ecdsaAddressMatch)) {
-    displayMessage('wallet-address', 'error');
+    displayMessage("wallet-address", "error");
     return;
   }
 
   if (!vote) {
-    displayMessage('vote', 'error');
+    displayMessage("vote", "error");
     return;
   }
 
-  const amount = parseInt(document.querySelector('#bis-amount').value, 10);
+  const amount = parseInt(document.querySelector("#bis-amount").value, 10);
   // Validate, make sure this is an integer. Will mostly not be the case because input field is number
-  if (!amount.match(/[0-9]+/) || amount <= 0) {
-    displayMessage('bis-amount', 'error');
+  if (amount <= 0) {
+    displayMessage("bis-amount", "error");
     return;
   }
 
@@ -93,56 +131,41 @@ function generate_vote() {
   const seed = bip39.mnemonicToSeedSync(mnemonic, DEFAULT_PASSWORD);
   const master_key = new DerivableKey(seed);
   let voting_key = master_key.derive(address).derive(MOTION_TXID);
-  let aes_key = voting_key.to_aes_key()
+  let aes_key = voting_key.to_aes_key();
 
-  const voting_transaction = new VotingTransaction(seed, address, MOTION_ID, MOTION_TXID, MOTION_ADDRESS);
+  const voting_transaction = new VotingTransaction(
+    seed,
+    address,
+    MOTION_ID,
+    MOTION_TXID,
+    MOTION_ADDRESS
+  );
   const transaction = voting_transaction.get_vote_transaction(vote, 10);
   console.log(transaction);
 
-
-  const element = document.querySelector('#result');
-  let message = "VOTE TRANSACTION<hr/>BIS URL Tab:<br/>";
-  message += "Send the following BisUrl from the related wallet: " + transaction['bis_url'] + "<br/>";
-  // TODO: 1 click "copy" button
-  message += "<hr/>Raw transaction Tab:<br/>";
-  message += "If your wallet does not support the bisurl feature, you can send the vote transaction by pasting the following info:<br/>";
-  message += "recipient: " + transaction["recipient"] + "<br/>";
-  message += "amount: " + transaction["amount"] + "<br/>";
-  message += "operation: " + transaction["operation"] + "<br/>";
-  message += "openfield/data: " + transaction["openfield"] + "<br/>";
-  // TODO: 1 click "copy" buttons
-
-  message += "<hr/>Pawer Tab:<br/>";
-  message += "If you're using Pawer, copy and paste this command to send your vote: <br/>";
-  let pawer = "pawer operation " + transaction["operation"] + " " + transaction["recipient"] + " " + transaction["amount"] + " " + transaction["openfield"];
-  message += pawer;
-  // TODO: 1 click "copy" buttons
-
-
-  message += "<hr/>Advanced/Debug tab:<br/>";
-  // master seed derived from the mnemonic
-  message += "Master 512 bits Seed: " + seed.toString("hex") + "<br/>";
-  message += "Derivation path: m/" + address + "/" + MOTION_TXID + "<br/>";
-  message += "Voting key: " + utils.bytesToHex(voting_key.seed) + "<br/>";
-  message += "AES Key: " + utils.bytesToHex(aes_key) + "<br/>";
-  result.innerHTML = message;
+  document.querySelector("#results-wrap").classList.remove("hidden");
+  document.querySelector("#result").innerHTML = getTabsContent(
+    transaction,
+    seed,
+    address,
+    aes_key,
+    voting_key
+  );
 }
 
-
 function generate_reveal() {
-
   // TODO: mostly copy/paste from generate_vote, factorize code.
 
   // TODO: check timestamps
 
-  const mnemonic = document.querySelector('#master-key').value;
+  const mnemonic = document.querySelector("#master-key").value;
   // TODO: block if empty or less than 12 words
   const valid = bip39.validateMnemonic(mnemonic);
   // TODO: If valid is false, then warn the user but go on anyway.
   // mnemonic created by a BIP39 compatible tool will validate, but we have to account for other generators to be safe.
   console.log("Valid mnemonic:", valid);
 
-  const address = document.querySelector('#wallet-address').value;
+  const address = document.querySelector("#wallet-address").value;
   // TODO: trim address and validate, give feedback to user if invalid
   // A valid bis address matches either one of these regexps:
   // RE_RSA_ADDRESS "^[abcdef0123456789]{56}$"
@@ -155,18 +178,25 @@ function generate_reveal() {
   const seed = bip39.mnemonicToSeedSync(mnemonic, DEFAULT_PASSWORD);
   const master_key = new DerivableKey(seed);
   let voting_key = master_key.derive(address).derive(MOTION_TXID);
-  let aes_key = voting_key.to_aes_key()
+  let aes_key = voting_key.to_aes_key();
 
-  const voting_transaction = new VotingTransaction(seed, address, MOTION_ID, MOTION_TXID, MOTION_ADDRESS);
+  const voting_transaction = new VotingTransaction(
+    seed,
+    address,
+    MOTION_ID,
+    MOTION_TXID,
+    MOTION_ADDRESS
+  );
   const transaction = voting_transaction.get_reveal_transaction();
   console.log(transaction);
 
-
-  const element = document.querySelector('#result');
+  const element = document.querySelector("#result");
   const message = `
   <div id="bis-tab">
   REVEAL TRANSACTION<hr/>BIS URL Tab:<br/>
-  Send the following BisUrl from the related wallet: ${transaction['bis_url']}<br/>
+  Send the following BisUrl from the related wallet: ${
+    transaction["bis_url"]
+  }<br/>
   <hr/>Raw transaction Tab:<br/>
   If your wallet does not support the bisurl feature, you can send the vote transaction by pasting the following info:<br/>
   recipient: ${transaction["recipient"]}<br/>
@@ -177,7 +207,9 @@ function generate_reveal() {
   <div id="pawer-tab">
   <hr/>Pawer Tab:<br/>
   If you're using Pawer, copy and paste this command to send your vote: <br/>
-  pawer operation ${transaction["operation"]} ${transaction["recipient"]} ${transaction["amount"]} ${transaction["openfield"]}
+  pawer operation ${transaction["operation"]} ${transaction["recipient"]} ${
+    transaction["amount"]
+  } ${transaction["openfield"]}
   </div>
   <div id="advanced-tab">
   <hr/>Advanced/Debug tab:<br/>
@@ -192,16 +224,14 @@ function generate_reveal() {
   result.innerHTML = message;
 }
 
-
-
 function component() {
-  const element = document.createElement('div');
+  const element = document.createElement("div");
 
   /*
     const mnemonic = bip39.entropyToMnemonic('00000000000000000000000000000000');
     element.innerHTML = _.join(['Mnemonic', mnemonic], ' ');
   
-    //console.log("seed");
+    // console.log("seed");
     bip39.mnemonicToSeed('letter advice cage absurd amount doctor acoustic avoid letter advice cage above', DEFAULT_PASSWORD).then(bytes => bytes.toString('hex')).then(console.log);
     //bip39.mnemonicToSeed('letter advice cage absurd amount doctor acoustic avoid letter advice cage above', DEFAULT_PASSWORD).then(console.log);
   
@@ -233,70 +263,67 @@ function component() {
 }
 
 // TODO: harmonize ids
-document.querySelector('#btn-generate').addEventListener('click', generate_seed);
-document.querySelector('#generate-vote-url').addEventListener('click', generate_vote);
-document.querySelector('#generate-reveal-url').addEventListener('click', generate_reveal);
+document
+  .querySelector("#btn-generate")
+  .addEventListener("click", generate_seed);
+document
+  .querySelector("#generate-vote-url")
+  .addEventListener("click", generate_vote);
+document
+  .querySelector("#generate-reveal-url")
+  .addEventListener("click", generate_reveal);
 document.body.appendChild(component());
 
-const voteAButton = document.querySelector('#btn-vote-a');
-const voteBButton = document.querySelector('#btn-vote-b');
+const voteAButton = document.querySelector("#btn-vote-a");
+const voteBButton = document.querySelector("#btn-vote-b");
 
-voteAButton.addEventListener('click', () => {
-  vote = 'A';
+voteAButton.addEventListener("click", () => {
+  vote = "A";
   // add green color to button A and remove from B
-  voteAButton.classList.replace('bg-gray-200', 'bg-green-400');
-  voteAButton.classList.replace('hover:bg-gray-300', 'hover:bg-green-500');
-  voteBButton.classList.replace('bg-green-400', 'bg-gray-200');
-  voteBButton.classList.replace('hover:bg-green-500', 'hover:bg-gray-300');
+  voteAButton.classList.replace("bg-gray-200", "bg-green-400");
+  voteAButton.classList.replace("hover:bg-gray-300", "hover:bg-green-500");
+  voteBButton.classList.replace("bg-green-400", "bg-gray-200");
+  voteBButton.classList.replace("hover:bg-green-500", "hover:bg-gray-300");
+  displayMessage("vote", "error", false);
 });
-voteBButton.addEventListener('click', () => {
-  vote = 'B';
+voteBButton.addEventListener("click", () => {
+  vote = "B";
   // add green color to button B and remove from A
-  voteBButton.classList.replace('bg-gray-200', 'bg-green-400');
-  voteBButton.classList.replace('hover:bg-gray-300', 'hover:bg-green-500');
-  voteAButton.classList.replace('bg-green-400', 'bg-gray-200');
-  voteAButton.classList.replace('hover:bg-green-500', 'hover:bg-gray-300');
+  voteBButton.classList.replace("bg-gray-200", "bg-green-400");
+  voteBButton.classList.replace("hover:bg-gray-300", "hover:bg-green-500");
+  voteAButton.classList.replace("bg-green-400", "bg-gray-200");
+  voteAButton.classList.replace("hover:bg-green-500", "hover:bg-gray-300");
+  displayMessage("vote", "error", false);
 });
 
-// TODO: add listeners to remove errors when value changes
+// add listeners to remove errors when value changes
+["master-key", "wallet-address", "bis-amount"].forEach(field => {
+  document.querySelector(`input#${field}`).addEventListener("change", () => {
+    displayMessage(field, "error", false);
+  });
+});
+
 // TODO: remove Generate button when the field has value
 
 // TABS
-const tabsWrapEl = document.querySelector('#tabs-wrap');
-// const tabsActiveClasses = 
-Array.from(document.querySelector('.tabs')).forEach(tabEl => {
-  tabEl.addEventListener('click', () => {
-    // remove current active tab
-    tabsWrapEl
-    // set new active tab
-    tabsWrapEl.querySelector(`#${tabEl.dataset.id}`).classList
-  })
-})
+const tabsWrapEl = document.querySelector("#tabs-wrap");
+const tabsActiveClasses = ["hover:bg-gray-300", "border-b-2", "bg-gray-400"];
+const tabsClasses = ["bg-gray-200", "hover:bg-gray-300"];
 
-const resElement = document.querySelector('#result');
-resElement.innerHTML = `
-  <div id="bis-url-tab" class="">
-  REVEAL TRANSACTION<hr/>BIS URL Tab:<br/>
-  Send the following BisUrl from the related wallet: klsandcjasbdfsad c,asdjbclasd<br/>
-  </div>
-  <div id="raw-txn-tab" class="hidden">
-  <hr/>Raw transaction Tab:<br/>
-  If your wallet does not support the bisurl feature, you can send the vote transaction by pasting the following info:<br/>
-  recipient: klsandcjasbdfsad c,asdjbclasd<br/>
-  amount: klsandcjasbdfsad c,asdjbclasd<br/>
-  operation: klsandcjasbdfsad c,asdjbclasd<br/>
-  openfield/data: klsandcjasbdfsad c,asdjbclasd<br/>
-  </div>
-  <div id="pawer-tab" class="hidden">
-  <hr/>Pawer Tab:<br/>
-  If you're using Pawer, copy and paste this command to send your vote: <br/>
-  pawer operation command
-  </div>
-  <div id="advanced-tab" class="hidden">
-  <hr/>Advanced/Debug tab:<br/>
-  Master 512 bits Seed: klsandcjasbdfsad c,asdjbclasd<br/>
-  Derivation path: m/klsandcjasbdfsad c,asdjbclasd<br/>
-  Voting key: klsandcjasbdfsad c,asdjbclasd<br/>
-  AES Key: klsandcjasbdfsad c,asdjbclasd<br/>
-  </div>
-  `;
+Array.from(tabsWrapEl.querySelectorAll(".tabs")).forEach(tabEl => {
+  tabEl.addEventListener("click", () => {
+    // remove current active tab
+    Array.from(tabsWrapEl.querySelectorAll(".tabs")).forEach(otherTab => {
+      otherTab.classList.remove(...tabsActiveClasses);
+      otherTab.classList.add(...tabsClasses);
+    });
+    // set new active tab
+    tabEl.classList.remove(...tabsClasses);
+    tabEl.classList.add(...tabsActiveClasses);
+    // set active div
+    Array.from(document.querySelectorAll(".tab-content")).forEach(contentEl => {
+      contentEl.classList.add("hidden");
+    });
+    document.querySelector(`#${tabEl.dataset.id}`).classList.remove("hidden");
+  });
+});
