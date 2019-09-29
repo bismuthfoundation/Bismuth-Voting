@@ -24,6 +24,9 @@ const START_VOTE_TIMESTAMP = 0; // from START_VOTE_TIMESTAMP to END_VOTE_TIMESTA
 const END_VOTE_TIMESTAMP = 0; // from END_VOTE_TIMESTAMP to END_REVEAL_TIMESTAMP user can reveal their votes
 const END_REVEAL_TIMESTAMP = 0;
 
+const tabsActiveClasses = ["hover:bg-gray-300", "border-b-2", "bg-gray-400"];
+const tabsClasses = ["bg-gray-200", "hover:bg-gray-300"];
+
 /**
  * Utility to display error/warning message
  * @param {string} id of the field
@@ -39,35 +42,35 @@ function displayMessage(id, type, show = true) {
 }
 
 function getTabsContent(transaction, seed, address, aes_key, voting_key) {
+  console.log(transaction.bis_url);
   return `
   <div id="bis-url-tab" class=" tab-content">
     Send the following BisUrl from the related wallet
-    <pre>${transaction.bis_url}</pre>
+    <textarea readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded">${
+      transaction.bis_url
+    }</textarea>
   </div>
   <div id="raw-txn-tab" class="hidden tab-content">
     If your wallet does not support the bisurl feature, you can send the vote transaction by pasting the following info:
-    <pre>
+    <textarea readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 recipient: ${transaction.recipient}
 amount: ${transaction.amount}
 operation: ${transaction.operation}
-openfield/data: ${transaction.openfield}
-    </pre>
+openfield/data: ${transaction.openfield}</textarea>
   </div>
   <div id="pawer-tab" class="hidden tab-content">
     If you're using Pawer, copy and paste this command to send your vote: <br/>
-    <pre>
+    <textarea readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 pawer operation ${transaction.operation} ${transaction.recipient} ${
     transaction.amount
-  } ${transaction.openfield}
-    </pre>
+  } ${transaction.openfield}</textarea>
   </div>
   <div id="advanced-tab" class="hidden tab-content">
-    <pre>
+    <textarea readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 Master 512 bits Seed: ${seed.toString("hex")}
 Derivation path: m/${address}/${MOTION_TXID}
 Voting key: ${utils.bytesToHex(voting_key.seed)}
-AES Key: ${utils.bytesToHex(aes_key)}
-    </pre>
+AES Key: ${utils.bytesToHex(aes_key)}</textarea>
   </div>
   `;
 }
@@ -144,6 +147,14 @@ function generate_vote() {
   console.log(transaction);
 
   document.querySelector("#results-wrap").classList.remove("hidden");
+  // reset tabs
+  Array.from(document.querySelectorAll(".tabs")).forEach(otherTab => {
+    otherTab.classList.remove(...tabsActiveClasses);
+    otherTab.classList.add(...tabsClasses);
+  });
+  document
+    .querySelector('div[data-id="bis-url-tab"]')
+    .classList.add(...tabsActiveClasses);
   document.querySelector("#result").innerHTML = getTabsContent(
     transaction,
     seed,
@@ -307,8 +318,6 @@ voteBButton.addEventListener("click", () => {
 
 // TABS
 const tabsWrapEl = document.querySelector("#tabs-wrap");
-const tabsActiveClasses = ["hover:bg-gray-300", "border-b-2", "bg-gray-400"];
-const tabsClasses = ["bg-gray-200", "hover:bg-gray-300"];
 
 Array.from(tabsWrapEl.querySelectorAll(".tabs")).forEach(tabEl => {
   tabEl.addEventListener("click", () => {
@@ -325,5 +334,9 @@ Array.from(tabsWrapEl.querySelectorAll(".tabs")).forEach(tabEl => {
       contentEl.classList.add("hidden");
     });
     document.querySelector(`#${tabEl.dataset.id}`).classList.remove("hidden");
+    // set height based on content
+    Array.from(document.querySelectorAll("textarea")).forEach(ta => {
+      ta.style.height = ta.scrollHeight + "px";
+    });
   });
 });
