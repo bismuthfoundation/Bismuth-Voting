@@ -16,13 +16,13 @@ const TEST_SEED_HEX =
 const DEFAULT_PASSWORD = "BismuthGVP";
 
 const MOTION_ID = 1; // hardcoded motion id for the time being
-const MOTION_TXID = "motion_1_txid_this_would_be_a_b64_encoded_string"; // hardcoded motion txid for the time being
-const MOTION_ADDRESS = "test_motion_address"; // hardcoded motion address for the time being
+const MOTION_TXID = "MEQCIAPObnznl/wywdGtNYfIt8R2FTaBjjw2s1WMPozdwJEtAiBsoTo4"; // hardcoded motion txid for the time being
+const MOTION_ADDRESS = "Bis1SUPPLYFimnbVEx9sBxLAdPWNeTyEWMVf3"; // hardcoded motion address for the time being
 
 // TODO: to be used to check whether the related action is allowed. (hardcoded for first vote)
-const START_VOTE_TIMESTAMP = 0; // from START_VOTE_TIMESTAMP to END_VOTE_TIMESTAMP user can send a vote
-const END_VOTE_TIMESTAMP = 0; // from END_VOTE_TIMESTAMP to END_REVEAL_TIMESTAMP user can reveal their votes
-const END_REVEAL_TIMESTAMP = 0;
+const START_VOTE_TIMESTAMP = 1569931200; // from START_VOTE_TIMESTAMP to END_VOTE_TIMESTAMP user can send a vote
+const END_VOTE_TIMESTAMP = 1572609600; // from END_VOTE_TIMESTAMP to END_REVEAL_TIMESTAMP user can reveal their votes
+const END_REVEAL_TIMESTAMP = 1573387200;
 
 const tabsActiveClasses = ["hover:bg-gray-300", "border-b-2", "bg-gray-400"];
 const tabsClasses = ["bg-gray-200", "hover:bg-gray-300"];
@@ -262,13 +262,13 @@ function component() {
   /*
     const mnemonic = bip39.entropyToMnemonic('00000000000000000000000000000000');
     element.innerHTML = _.join(['Mnemonic', mnemonic], ' ');
-  
+
     // console.log("seed");
     bip39.mnemonicToSeed('letter advice cage absurd amount doctor acoustic avoid letter advice cage above', DEFAULT_PASSWORD).then(bytes => bytes.toString('hex')).then(console.log);
     //bip39.mnemonicToSeed('letter advice cage absurd amount doctor acoustic avoid letter advice cage above', DEFAULT_PASSWORD).then(console.log);
-  
+
     console.log(derivableKeyVersion);
-  
+
     const master_key = new DerivableKey(utils.hexToBytes(TEST_SEED_HEX));
     console.log("Master " + master_key);
     console.log("Master seed", master_key.seed);
