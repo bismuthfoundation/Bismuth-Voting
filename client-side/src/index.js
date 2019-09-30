@@ -41,10 +41,11 @@ function displayMessage(id, type, show = true) {
   }
 }
 
-function getTabsContent(transaction, seed, address, aes_key, voting_key) {
+function getTabsContent(transaction, seed, address, aes_key, voting_key, test_vote) {
   console.log(transaction.bis_url);
   return `
   <div id="bis-url-tab" class="tab-content">
+<div class="flex justify-start mt-4" style="margin-bottom:10px;"><button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button></div>
     Send the following BisUrl from the related wallet
     <textarea id="bis-url-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded">${
       transaction.bis_url
@@ -54,6 +55,7 @@ function getTabsContent(transaction, seed, address, aes_key, voting_key) {
     </div>
   </div>
   <div id="raw-txn-tab" class="hidden tab-content">
+<div class="flex justify-start mt-4" style="margin-bottom:10px;"><button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button></div>
     If your wallet does not support the bisurl feature, you can send the vote transaction by pasting the following info:
     <textarea id="raw-txn-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 recipient: ${transaction.recipient}
@@ -65,6 +67,7 @@ openfield/data: ${transaction.openfield}</textarea>
 </div>
   </div>
   <div id="pawer-tab" class="hidden tab-content">
+<div class="flex justify-start mt-4" style="margin-bottom:10px;"><button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button></div>
     If you're using Pawer, copy and paste this command to send your vote: <br/>
     <textarea id="pawer-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 pawer operation ${transaction.operation} ${transaction.recipient} ${
@@ -75,6 +78,7 @@ pawer operation ${transaction.operation} ${transaction.recipient} ${
     </div>
   </div>
   <div id="advanced-tab" class="hidden tab-content">
+<div class="flex justify-start mt-4" style="margin-bottom:10px;"><button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button></div>
     <textarea id="advanced-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 Master 512 bits Seed: ${seed.toString("hex")}
 Derivation path: m/${address}/${MOTION_TXID}
@@ -157,6 +161,14 @@ function generate_vote() {
   );
   const transaction = voting_transaction.get_vote_transaction(vote, 10);
   console.log(transaction);
+  let test_message = transaction["openfield"].split(":")[1];
+  let test_key = master_key.derive(address).derive(MOTION_TXID);
+  let test_vote = test_key.decrypt_vote_b64(test_message);
+  // console.log("Vote:", test_vote);
+  if (vote != test_vote) {
+    displayMessage("vote", "Vote Integrity Error");
+    return;
+  }
 
   document.querySelector("#results-wrap").classList.remove("hidden");
 
@@ -173,7 +185,8 @@ function generate_vote() {
     seed,
     address,
     aes_key,
-    voting_key
+    voting_key,
+    test_vote
   );
   // COPY TO CLIPBOARD
   Array.from(document.querySelectorAll("button.copy")).forEach(btn => {
