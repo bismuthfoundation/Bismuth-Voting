@@ -5,6 +5,8 @@ See https://github.com/bismuthfoundation/Hack-with-BIS/tree/master/01-Concepts f
 
 The Voting protocol "BGVP" makes use of the same feature.
 
+The Governance master address is the following ECDSA address: `Bis1GoVerN42JsM57RiSSDg5hBbrwWBMEStBy`
+
 ## Vote timeline
 
 - A motion is published on chain, with associated dates
@@ -27,17 +29,30 @@ The Voting protocol "BGVP" makes use of the same feature.
 
 **Data:** 
 A json payload with following keys:  
-- Motion_number (incremental)
+- Motion_number (incremental)  
+- Motion_title (short string)
 - Motion_url (string) – url of the post detailing the motion
-- Motion address (string) - a dedicated Bis address for that motion
+- Motion_address (string) - a dedicated Bis address for that motion
 - Vote_start_date (unix timestamp)
 - Vote_reading_date (unix timestamp)
 - Vote_end_date (unix timestamp)
 - Options: list of dicts: {“option_value”:string, “option_title”:string}
 
-Example payload:  
+Example payload, test motion:  
 ```
-TODO
+{
+    "Motion_number": "0",
+    "Motion_title": "Test motion",
+    "Motion_url": "https://hypernodes.bismuth.live/?p=863",
+    "Motion_address": "Bis1Gov1CztEShtDDddMjmzCDv9GQkuFqTzdH",
+    "Vote_start_date": 1569931200,
+    "Vote_reading_date": 1571140800,
+    "Vote_end_date": 1572609600,
+    "Options": [
+        {"option_value": "A", "option_title": "Test motion vote A"},
+        {"option_value": "B", "option_title": "Test motion vote B"},
+    ]
+}
 ```
 
 > **motion_id** is the txid of the motion transaction
