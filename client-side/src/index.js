@@ -301,9 +301,9 @@ document
 document
   .querySelector("#generate-vote-url")
   .addEventListener("click", generate_vote);
-document
-  .querySelector("#generate-reveal-url")
-  .addEventListener("click", generate_reveal);
+// document
+//   .querySelector("#generate-reveal-url")
+//   .addEventListener("click", generate_reveal);
 document.body.appendChild(component());
 
 const voteAButton = document.querySelector("#btn-vote-a");
