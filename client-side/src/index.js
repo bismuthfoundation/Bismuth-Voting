@@ -33,6 +33,7 @@ const tabsClasses = ["bg-gray-200", "hover:bg-gray-300"];
  * @param {'error'|'message'|'warning'} type
  * @param {boolean} show
  */
+ 
 function displayMessage(id, type, show = true) {
   const el = document.querySelector(`#${id}-${type}`);
   if (el) {
