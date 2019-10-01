@@ -2,6 +2,10 @@
 
 Uses direct connection to a local sqlite db to build stats about current Bismuth motions.
 
+Run without params for help.  
+
+ex: `python3 refresh.py --dbpath /root/Bismuth/static/ motions`    
+ex: `python3 refresh.py --dbpath /root/Bismuth/static/ stats`
 
 ## refresh.py motions
 
@@ -69,4 +73,30 @@ Status can be one of the following:
 - Ended
 
 ## data/{motion_id}.json
+
+Sample for Motion 1:
+
+```
+{
+  "total_votes_amount": [
+    350
+  ],
+  "total_votes_count": [
+    2
+  ],
+  "total_change_count": [
+    0
+  ],
+  "total_voters": [
+    2
+  ],
+  "total_reveals": [
+    0
+  ],
+  "Votes": {
+    "A": "N/A",
+    "B": "N/A"
+  }
+}
+```
  
