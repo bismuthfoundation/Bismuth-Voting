@@ -33,7 +33,7 @@ const tabsClasses = ["bg-gray-200", "hover:bg-gray-300"];
  * @param {'error'|'message'|'warning'} type
  * @param {boolean} show
  */
- 
+
 function displayMessage(id, type, show = true) {
   const el = document.querySelector(`#${id}-${type}`);
   if (el) {
@@ -160,7 +160,7 @@ function generate_vote() {
     MOTION_TXID,
     MOTION_ADDRESS
   );
-  const transaction = voting_transaction.get_vote_transaction(vote, 10);
+  const transaction = voting_transaction.get_vote_transaction(vote, amount);
   console.log(transaction);
   let test_message = transaction["openfield"].split(":")[1];
   let test_key = master_key.derive(address).derive(MOTION_TXID);
