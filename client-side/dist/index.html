@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Bismuth Governance Voting</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.1.2/tailwind.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container mx-auto font-sans p-4">
+      <div class="text-center my-8">
+        <img
+          class="mx-auto"
+          width="60"
+          src="https://bismuth.cz/wp-content/uploads/2018/07/600.png"
+          alt="Bismuth"
+        />
+        <h1 class="text-4xl font-bold capitalize text-purple-800">
+          Bismuth Governance Voting
+        </h1>
+      </div>
+      <div class="max-w-3xl mx-auto">
+        <div class="master-key-wrap mb-8">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="master-key"
+          >
+            Master Key (private)
+          </label>
+          <div
+            class="shadow border rounded w-full text-gray-700 py-2 px-3 flex"
+          >
+            <input
+              class="flex-1 appearance-none leading-tight focus:outline-none rounded"
+              id="master-key"
+              type="text"
+              placeholder="Enter your seed or Generate"
+            />
+
+            <button
+              id="btn-generate"
+              class="text-sm w-auto hover:bg-blue-100 font-bold text-blue-500 px-2 rounded"
+            >
+              Generate
+            </button>
+          </div>
+          <div
+            id="master-key-error"
+            class="border-red-500 border-l-4 hidden mt-2 py-2 bg-red-100 pl-2 text-red-900 text-sm rounded-sm"
+          >
+            Enter a mnemonic of at least 12 words
+          </div>
+          <div
+            id="master-key-warning"
+            class="hidden mt-2 py-2 bg-yellow-100 pl-2 text-sm border-yellow-400 text-yellow-900 border-l-4 rounded-sm"
+          >
+            Master key warning
+          </div>
+          <div
+            id="master-key-message"
+            class="hidden mt-2 py-2 bg-yellow-100 pl-2 text-sm border-yellow-400 border-l-4 rounded-sm"
+          >
+            Please save this master key in a safe place, you'll need it again to
+            reveal your vote and for further votes.
+          </div>
+        </div>
+        <div class="mb-8">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="wallet-address"
+          >
+            Wallet Address
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+            id="wallet-address"
+            type="text"
+          />
+          <div
+            id="wallet-address-error"
+            class="border-red-500 border-l-4 hidden mt-2 py-2 bg-red-100 text-red-900 pl-2 text-sm rounded-sm"
+          >
+            Invalid address!
+          </div>
+        </div>
+        <div class="mb-4">
+          <p class="block text-gray-700 text-sm font-bold mb-2">
+            Vote for motion BVGP-1
+          </p>
+          <div class="flex flex-wrap text-center">
+            <div
+              data-id="A"
+              id="btn-vote-a"
+              class="cursor-pointer flex-1 p-4 bg-gray-200 rounded hover:bg-gray-300 shadow mb-4 min-w-full sm:min-w-0 sm:mr-2"
+            >
+              BGV-01/A
+              <p class="text-sm text-gray-700">Do not change supply emission</p>
+            </div>
+            <div
+              data-id="B"
+              id="btn-vote-b"
+              class="cursor-pointer flex-1 p-4 bg-gray-200 rounded hover:bg-gray-300 shadow mb-4 min-w-full sm:min-w-0 sm:ml-2"
+            >
+              BGV-01/B
+              <p class="text-sm text-gray-700">Change the supply emission to lower the dilution</p>
+            </div>
+          </div>
+          <div
+            id="vote-error"
+            class="border-red-500 border-l-4 hidden mt-2 py-2 bg-gray-200 text-red-900 pl-2 text-sm rounded-sm"
+          >
+            Please select a vote.
+          </div>
+        </div>
+        <div class="mb-8">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="bis-amount"
+          >
+            BIS Amount
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full sm:w-1/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+            id="bis-amount"
+            type="number"
+          />
+          <div
+            id="bis-amount-error"
+            class="border-red-500 border-l-4 hidden mt-2 py-2 bg-gray-200 text-red-900 pl-2 text-sm rounded-sm"
+          >
+            Enter a valid amount
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button
+          id="generate-vote-url"
+          class="bg-purple-800 hover:bg-purple-700 text-white font-bold py-2 px-4 border-b-4 border-purple-900 hover:border-purple-800 rounded"
+        >
+          Generate Vote BisUrl
+        </button>
+
+        <!-- <button
+          id="generate-reveal-url"
+          class="bg-purple-800 hover:bg-purple-700 text-white font-bold py-2 px-4 border-b-4 border-purple-900 hover:border-purple-800 rounded"
+        >
+          Generate Reveal BisUrl
+        </button> -->
+      </div>
+    </div>
+
+    <!-- Show this after clicking the buttons -->
+    <div
+      id="results-wrap"
+      class="hidden container mx-auto max-w-3xl font-sans p-4"
+    >
+      <div id="tabs-wrap" class="text-center mt-8 flex">
+        <div
+          data-id="bis-url-tab"
+          class="tabs font-bold cursor-pointer flex-1 bg-gray-400 border-purple-700 py-4 hover:bg-gray-300 border-b-2"
+        >
+          BIS URL
+        </div>
+        <div
+          data-id="raw-txn-tab"
+          class="tabs font-bold cursor-pointer flex-1 bg-gray-200 border-purple-700 py-4 hover:bg-gray-300"
+        >
+          Raw Txn
+        </div>
+        <div
+          data-id="pawer-tab"
+          class="tabs font-bold cursor-pointer flex-1 bg-gray-200 border-purple-700 py-4 hover:bg-gray-300"
+        >
+          Pawer
+        </div>
+        <div
+          data-id="advanced-tab"
+          class="tabs font-bold cursor-pointer flex-1 bg-gray-200 border-purple-700 py-4 hover:bg-gray-300"
+        >
+          Advanced / Debug
+        </div>
+      </div>
+      <div id="result" class="p-4 bg-gray-100"></div>
+    </div>
+  <script type="text/javascript" src="main.js"></script></body>
+</html>
