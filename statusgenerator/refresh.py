@@ -8,6 +8,7 @@ import click
 import json
 import sqlite3
 from os import path
+from time import time
 
 
 __version__ = "0.0.1"
@@ -27,6 +28,18 @@ def fetch_all(ctx, sql:str, params=None):
     else:
         res = ctx.obj['db'].execute(sql)
     return res.fetchall()
+
+
+def motion_status(motion: dict, now: float=0) -> str:
+    now = now if now else time()
+    status = 'Planned'
+    if motion['Vote_end_date'] >= now:
+        status = 'Ended'
+    if motion['Vote_reading_date'] < now < motion['Vote_end_date']:
+        status = 'Reading...'
+    if motion['Vote_start_date'] < now < motion['Vote_reading_date']:
+        status = 'Voting...'
+    return status
 
 
 @click.group()
@@ -57,13 +70,19 @@ def motions(ctx):
     init_db(ctx)
     res = fetch_all(ctx, "SELECT signature, openfield FROM transactions WHERE address=? AND operation='bgvp:motion' ORDER BY timestamp DESC", (REFERENCE_ADDRESS, ))
     motions = {}
+    now = time()
     for item in res:
         signature, motion = item
         motion = json.loads(motion)
         motion["Motion_id"] = signature[:56]
         motions[str(motion["Motion_number"])] = motion
         # TODO: Motion_Status depending on timestamp
-    print(json.dumps(motions, indent=2))
+        motion["Status"] = motion_status(motion, now=now)
+
+    data = json.dumps(motions, indent=2)
+    with open("data/motions.json", "w") as fp:
+        fp.write(data)
+    print(data)
 
 
 @cli.command()
