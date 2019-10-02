@@ -12,7 +12,7 @@ from six import int2byte
 
 from bismuthvoting.bip39 import BIP39
 
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 
 
 FIELD_ORDER = 2 ** 256
@@ -137,7 +137,10 @@ class DerivableKey:
     @classmethod
     def get_from_path(cls, mnemonic: str, path: str) -> "DerivableKey":
         """Gets the derived key in one go from address/motion path string"""
-        address, motion = path.split("/")
+        # address, motion = path.split("/")  # No: motion txid can contain "/"
+        elements = path.split("/")
+        address = elements.pop(0)
+        motion = "/".join(elements)
         bip39 = BIP39.from_mnemonic(mnemonic)
         master_key = DerivableKey(seed=bip39.to_seed())
         address_key = master_key.derive(address)
