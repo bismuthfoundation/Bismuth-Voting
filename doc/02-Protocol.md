@@ -92,7 +92,7 @@ TODO
 **Operation:** bgvp:change
 
 **Data:** a string  
-initial_vote_txidb64_encode(encrypted)
+initial_vote_txid:b64_encode(encrypted)
 
 AES encryption gives encrypted from (new vote option + space + random padding to 16 bytes)   
 See 05-AES_Encryption
