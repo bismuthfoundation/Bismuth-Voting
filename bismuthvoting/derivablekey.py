@@ -12,7 +12,7 @@ from six import int2byte
 
 from bismuthvoting.bip39 import BIP39
 
-__version__ = "0.0.5"
+__version__ = "0.0.6"
 
 
 FIELD_ORDER = 2 ** 256
@@ -131,13 +131,13 @@ class DerivableKey:
             iv = "Bismuth BGVP IV.".encode("utf-8")
         clear = cls.decrypt(aes_key, data, iv=iv)
         # print(clear)
-        clear, _ = clear.split(b" ")
+        clear, _ = clear.split(b" ", 1)  # random padding could have added extra " "
         return clear.decode("utf-8")
 
     @classmethod
     def get_from_path(cls, mnemonic: str, path: str) -> "DerivableKey":
         """Gets the derived key in one go from address/motion path string"""
-        # address, motion = path.split("/")  # No: motion txid can contain "/"
+        # address, motion = path.split("/")  # No: motion txid can contain "/" => coud use same limit param from split as above.
         elements = path.split("/")
         address = elements.pop(0)
         motion = "/".join(elements)
