@@ -49,7 +49,7 @@ function getTabsContent(transaction, seed, address, aes_key, voting_key, test_vo
 <div class="flex justify-start mt-4" style="margin-bottom:10px;"><button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button></div>
     Send the following BisUrl from the related wallet
     <textarea id="bis-url-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded">${
-      transaction.bis_url
+    transaction.bis_url
     }</textarea>
     <div class="flex justify-end mt-4">
     <button data-id="bis-url" class="copy text-xs hover:bg-purple-200 font-bold text-purple-800 px-2 rounded">Copy to clipboard</button>
@@ -73,7 +73,7 @@ openfield/data: ${transaction.openfield}</textarea>
     <textarea id="pawer-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 pawer operation ${transaction.operation} ${transaction.recipient} ${
     transaction.amount
-  } ${transaction.openfield}</textarea>
+    } ${transaction.openfield}</textarea>
   <div class="flex justify-end mt-4">
     <button data-id="pawer" class="copy text-xs hover:bg-purple-200 font-bold text-purple-800 px-2 rounded">Copy to clipboard</button>
     </div>
@@ -205,20 +205,37 @@ function generate_reveal() {
   // TODO: check timestamps
 
   const mnemonic = document.querySelector("#master-key").value;
-  // TODO: block if empty or less than 12 words
+  // block if empty or less than 12 words
+  if (!mnemonic || mnemonic.split(" ").length < 12) {
+    displayMessage("master-key", "error");
+    return;
+  }
+
   const valid = bip39.validateMnemonic(mnemonic);
-  // TODO: If valid is false, then warn the user but go on anyway.
   // mnemonic created by a BIP39 compatible tool will validate, but we have to account for other generators to be safe.
+  if (!valid) {
+    // If valid is false, then warn the user but go on anyway.
+    displayMessage("master-key", "warning");
+  }
   console.log("Valid mnemonic:", valid);
 
   const address = document.querySelector("#wallet-address").value;
-  // TODO: trim address and validate, give feedback to user if invalid
+  // trim address and validate, give feedback to user if invalid
   // A valid bis address matches either one of these regexps:
   // RE_RSA_ADDRESS "^[abcdef0123456789]{56}$"
   // RE_ECDSA_ADDRESS "^Bis1[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{28,52}$"
   // We can use "Bis_test_address1" - that does not validate - to test the GUI with test vectors
+  const rsaAddressMatch = address.match(/^[abcdef0123456789]{56}$/);
+  const ecdsaAddressMatch = address.match(
+    /^Bis1[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{28,52}$/
+  );
+  if (!(rsaAddressMatch || ecdsaAddressMatch)) {
+    displayMessage("wallet-address", "error");
+    return;
+  }
 
   // No need for option nor amount
+  // TODO: (reveal) comment out the fields not required in HTML
 
   // This part is redundant, done by VotingTransaction later on, but can be useful for debug (advanced tab).
   const seed = bip39.mnemonicToSeedSync(mnemonic, DEFAULT_PASSWORD);
@@ -236,38 +253,32 @@ function generate_reveal() {
   const transaction = voting_transaction.get_reveal_transaction();
   console.log(transaction);
 
-  const element = document.querySelector("#result");
-  const message = `
-  <div id="bis-tab">
-  REVEAL TRANSACTION<hr/>BIS URL Tab:<br/>
-  Send the following BisUrl from the related wallet: ${
-    transaction["bis_url"]
-  }<br/>
-  <hr/>Raw transaction Tab:<br/>
-  If your wallet does not support the bisurl feature, you can send the vote transaction by pasting the following info:<br/>
-  recipient: ${transaction["recipient"]}<br/>
-  amount: ${transaction["amount"]}<br/>
-  operation: ${transaction["operation"]}<br/>
-  openfield/data: ${transaction["openfield"]}<br/>
-  </div>
-  <div id="pawer-tab">
-  <hr/>Pawer Tab:<br/>
-  If you're using Pawer, copy and paste this command to send your vote: <br/>
-  pawer operation ${transaction["operation"]} ${transaction["recipient"]} ${
-    transaction["amount"]
-  } ${transaction["openfield"]}
-  </div>
-  <div id="advanced-tab">
-  <hr/>Advanced/Debug tab:<br/>
-  Master 512 bits Seed: ${seed.toString("hex")}<br/>
-  Derivation path: m/${address}/${MOTION_TXID}<br/>
-  Voting key: ${utils.bytesToHex(voting_key.seed)}<br/>
-  AES Key: ${utils.bytesToHex(aes_key)}<br/>
-  </div>
-  `;
-  // master seed derived from the mnemonic
+  document.querySelector("#results-wrap").classList.remove("hidden");
 
-  result.innerHTML = message;
+  // reset tabs
+  Array.from(document.querySelectorAll(".tabs")).forEach(otherTab => {
+    otherTab.classList.remove(...tabsActiveClasses);
+    otherTab.classList.add(...tabsClasses);
+  });
+  document
+    .querySelector('div[data-id="bis-url-tab"]')
+    .classList.add(...tabsActiveClasses);
+  document.querySelector("#result").innerHTML = getTabsContent(
+    transaction,
+    seed,
+    address,
+    aes_key,
+    voting_key,
+    test_vote
+  );
+  // COPY TO CLIPBOARD
+  Array.from(document.querySelectorAll("button.copy")).forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tAEl = document.querySelector(`textarea#${btn.dataset.id}-data`);
+      tAEl.select();
+      document.execCommand("copy");
+    });
+  });
 }
 
 function component() {
@@ -309,16 +320,18 @@ function component() {
 }
 
 // TODO: harmonize ids
+// TODO: (reveal) remove this and HTML if this is not required
 document
   .querySelector("#btn-generate")
   .addEventListener("click", generate_seed);
-document
-  .querySelector("#generate-vote-url")
-  .addEventListener("click", generate_vote);
-// document
-//   .querySelector("#generate-reveal-url")
-//   .addEventListener("click", generate_reveal);
-document.body.appendChild(component());
+
+const genVoteUrlButton = document.querySelector("#generate-vote-url");
+if (genVoteUrlButton) genVoteUrlButton.addEventListener("click", generate_vote);
+
+const genRevealUrlButton = document.querySelector("#generate-reveal-url");
+if (genRevealUrlButton) genRevealUrlButton.addEventListener("click", generate_reveal);
+
+// document.body.appendChild(component());
 
 const voteAButton = document.querySelector("#btn-vote-a");
 const voteBButton = document.querySelector("#btn-vote-b");
@@ -344,12 +357,13 @@ voteBButton.addEventListener("click", () => {
 
 // add listeners to remove errors when value changes
 ["master-key", "wallet-address", "bis-amount"].forEach(field => {
-  document.querySelector(`input#${field}`).addEventListener("change", () => {
-    displayMessage(field, "error", false);
-  });
+  const el = document.querySelector(`input#${field}`);
+  if (el) {
+    el.addEventListener("change", () => {
+      displayMessage(field, "error", false);
+    });
+  }
 });
-
-// TODO: remove Generate button when the field has value
 
 // TABS
 const tabsWrapEl = document.querySelector("#tabs-wrap");
