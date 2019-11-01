@@ -130,7 +130,7 @@ class DerivableKey:
             # iv is needed for CBC, we use a fixed iv - 16 bytes long - to limit data to transmit by default.
             iv = "Bismuth BGVP IV.".encode("utf-8")
         clear = cls.decrypt(aes_key, data, iv=iv)
-        # print(clear)
+        # print("clear ", clear)
         clear, _ = clear.split(b" ", 1)  # random padding could have added extra " "
         return clear.decode("utf-8")
 

@@ -126,13 +126,18 @@ def calc_stat(ctx, motion: dict) -> dict:
         value = option["option_value"]
         votes[value] = 0
     votes["N/A"] = 0
+    votes["ERR"] = 0
     # print(all_votes)
     for vote in all_votes:
         address, amount, message = vote
         message = b64decode(message.split(':')[1])
         if address in voting_key:
-            clear_text = DerivableKey.decrypt_vote(voting_key[address], message)
-            print("address {} vote {}".format(address, clear_text))
+            print("address {} message {} - Amount {}".format(address, message, amount))
+            try:
+                clear_text = DerivableKey.decrypt_vote(voting_key[address], message)
+            except:
+                clear_text = 'ERR'
+            print("address {} vote {} - Amount {}".format(address, clear_text, amount))
             votes[clear_text] += amount
             details.append([address, amount, clear_text])
         else:
