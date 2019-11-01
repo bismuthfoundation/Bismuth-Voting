@@ -8,11 +8,16 @@ Requires a local full node
 import click
 import json
 import sqlite3
+import sys
 from os import path
 from time import time
+from base64 import b64encode, b64decode
+
+sys.path.append("../")
+from bismuthvoting.derivablekey import DerivableKey
 
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 # Master governance address
@@ -60,35 +65,94 @@ def calc_stat(ctx, motion: dict) -> dict:
     ):
         print("Ignoring done '{}' motion".format(motion["Motion_number"]))
         return
+    # Get the last valid block for this motion
+    last_valid = fetch_one(
+        ctx,
+        "SELECT block_height FROM transactions WHERE timestamp < ? and reward > 0 order by block_height DESC",
+        (motion["Vote_reading_date"],),
+    )
+    last_valid = last_valid[0]
+    # print("Last Valid", last_valid)
+
     total_votes_amount = fetch_one(
         ctx,
-        "SELECT sum(amount) FROM transactions WHERE recipient = ? AND operation = 'bgvp:vote'",
-        (motion["Motion_address"],),
+        "SELECT sum(amount) FROM transactions WHERE recipient = ? AND operation = 'bgvp:vote' AND block_height<= ?",
+        (motion["Motion_address"], last_valid),
     )
     total_votes_count = fetch_one(
         ctx,
-        "SELECT count(*) FROM transactions WHERE recipient = ? AND operation = 'bgvp:vote'",
-        (motion["Motion_address"],),
+        "SELECT count(*) FROM transactions WHERE recipient = ? AND operation = 'bgvp:vote' AND block_height<= ?",
+        (motion["Motion_address"], last_valid),
     )
     total_change_count = fetch_one(
         ctx,
-        "SELECT count(*) FROM transactions WHERE recipient = ? AND operation = 'bgvp:change'",
-        (motion["Motion_address"],),
+        "SELECT count(*) FROM transactions WHERE recipient = ? AND operation = 'bgvp:change' AND block_height<= ?",
+        (motion["Motion_address"], last_valid),
     )
     total_voters = fetch_one(
         ctx,
-        "SELECT count(distinct(address)) FROM transactions WHERE recipient = ? AND operation = 'bgvp:vote'",
-        (motion["Motion_address"],),
+        "SELECT count(distinct(address)) FROM transactions WHERE recipient = ? AND operation = 'bgvp:vote' AND block_height<= ?",
+        (motion["Motion_address"], last_valid),
     )
     total_reveals = fetch_one(
         ctx,
-        "SELECT count(*) FROM transactions WHERE recipient = ? AND operation = 'bgvp:reveal'",
-        (motion["Motion_address"],),
+        "SELECT count(*) FROM transactions WHERE recipient = ? AND operation = 'bgvp:reveal' AND timestamp < ?",
+        (motion["Motion_address"], motion["Vote_end_date"]),
     )
+
+    # Now get the reveals
+    details = []
+
+    reveals = fetch_all(ctx,
+                        "SELECT address, openfield FROM transactions WHERE recipient = ? AND operation = 'bgvp:reveal' AND timestamp < ?",
+                        (motion["Motion_address"], motion["Vote_end_date"]),
+    )
+    # print("Reveals", reveals)
+    voting_key = {}
+    for reveal in reveals:
+        key = b64decode(reveal[1].split(":")[1])
+        # clear_text = DerivableKey.decrypt_vote(aes_key, message)
+        voting_key[reveal[0]] = key
+    # print(voting_key)
+
+    # And all the votes
     votes = {}
+    all_votes = fetch_all(ctx,
+                        "SELECT address, amount, openfield FROM transactions WHERE recipient = ? AND operation = 'bgvp:vote' AND block_height <= ?",
+                        (motion["Motion_address"], last_valid),
+    )
+    # init voting amounts
     for option in motion["Options"]:
         value = option["option_value"]
-        votes[value] = "N/A"
+        votes[value] = 0
+    votes["N/A"] = 0
+    # print(all_votes)
+    for vote in all_votes:
+        address, amount, message = vote
+        message = b64decode(message.split(':')[1])
+        if address in voting_key:
+            clear_text = DerivableKey.decrypt_vote(voting_key[address], message)
+            print("address {} vote {}".format(address, clear_text))
+            votes[clear_text] += amount
+            details.append([address, amount, clear_text])
+        else:
+            votes["N/A"] += amount
+            details.append([address, amount, "N/A"])
+
+    # print(votes)
+
+    votes_pc = {}
+    for option in motion["Options"]:
+        value = option["option_value"]
+        votes_pc[value] = votes[value] * 100 / total_votes_amount[0]
+    votes_pc["N/A"] = votes["N/A"] * 100 / total_votes_amount[0]
+
+    """
+    for option in motion["Options"]:
+        value = option["option_value"]
+        votes[value] = "N/A"  # amount + total %
+    votes["N/A"] = "XX - 100%" # amount + total to be revealed
+    """
     stats = {
         "total_votes_amount": total_votes_amount,
         "total_votes_count": total_votes_count,
@@ -96,6 +160,8 @@ def calc_stat(ctx, motion: dict) -> dict:
         "total_voters": total_voters,
         "total_reveals": total_reveals,
         "Votes": votes,
+        "VotesPC": votes_pc,
+        "Details": details
     }
     data = json.dumps(stats, indent=2)
     with open("data/{}.json".format(motion["Motion_number"]), "w") as fp:
