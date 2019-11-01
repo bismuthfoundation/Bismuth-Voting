@@ -14,7 +14,7 @@ module.exports = {
     new BundleAnalyzerPlugin({"analyzerPort":9000, "analyzerMode": "static", "openAnalyzer": false, "generateStatsFile": true, "statsFilename": "BundleAnalyser.stats.json"})
   ],
 
-  mode: "production",
+  mode: "development",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist")

@@ -46,7 +46,10 @@ function getTabsContent(transaction, seed, address, aes_key, voting_key, test_vo
   console.log(transaction.bis_url);
   return `
   <div id="bis-url-tab" class="tab-content">
-<div class="flex justify-start mt-4" style="margin-bottom:10px;"><button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button></div>
+<div class="flex justify-start mt-4" style="margin-bottom:10px;">
+<!-- button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button -->
+<button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Reveal Vote(s) for ${address}</button>
+</div>
     Send the following BisUrl from the related wallet
     <textarea id="bis-url-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded">${
     transaction.bis_url
@@ -56,7 +59,11 @@ function getTabsContent(transaction, seed, address, aes_key, voting_key, test_vo
     </div>
   </div>
   <div id="raw-txn-tab" class="hidden tab-content">
-<div class="flex justify-start mt-4" style="margin-bottom:10px;"><button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button></div>
+<div class="flex justify-start mt-4" style="margin-bottom:10px;">
+<!-- button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button -->
+<button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Reveal Vote(s) for ${address}</button>
+</div>
+
     If your wallet does not support the bisurl feature, you can send the vote transaction by pasting the following info:
     <textarea id="raw-txn-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 recipient: ${transaction.recipient}
@@ -68,7 +75,10 @@ openfield/data: ${transaction.openfield}</textarea>
 </div>
   </div>
   <div id="pawer-tab" class="hidden tab-content">
-<div class="flex justify-start mt-4" style="margin-bottom:10px;"><button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button></div>
+<div class="flex justify-start mt-4" style="margin-bottom:10px;">
+<!-- button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button -->
+<button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Reveal Vote(s) for ${address}</button>
+</div>
     If you're using Pawer, copy and paste this command to send your vote: <br/>
     <textarea id="pawer-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 pawer operation ${transaction.operation} ${transaction.recipient} ${
@@ -79,7 +89,10 @@ pawer operation ${transaction.operation} ${transaction.recipient} ${
     </div>
   </div>
   <div id="advanced-tab" class="hidden tab-content">
-<div class="flex justify-start mt-4" style="margin-bottom:10px;"><button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button></div>
+<div class="flex justify-start mt-4" style="margin-bottom:10px;">
+<!-- button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Your vote: ${transaction.amount} BIS for option ${test_vote}</button -->
+<button class="text bg-purple-200 font-bold text-purple-800 px-2 rounded">Reveal Vote(s) for ${address}</button>
+</div>
     <textarea id="advanced-data" readonly class="font-mono w-full text-sm overflow-x-auto bg-purple-100 text-purple-900 p-2 resize-none rounded"">
 Master 512 bits Seed: ${seed.toString("hex")}
 Derivation path: m/${address}/${MOTION_TXID}
@@ -269,7 +282,7 @@ function generate_reveal() {
     address,
     aes_key,
     voting_key,
-    test_vote
+    ""
   );
   // COPY TO CLIPBOARD
   Array.from(document.querySelectorAll("button.copy")).forEach(btn => {
@@ -333,6 +346,7 @@ if (genRevealUrlButton) genRevealUrlButton.addEventListener("click", generate_re
 
 // document.body.appendChild(component());
 
+/*
 const voteAButton = document.querySelector("#btn-vote-a");
 const voteBButton = document.querySelector("#btn-vote-b");
 
@@ -354,6 +368,7 @@ voteBButton.addEventListener("click", () => {
   voteAButton.classList.replace("hover:bg-green-500", "hover:bg-gray-300");
   displayMessage("vote", "error", false);
 });
+*/
 
 // add listeners to remove errors when value changes
 ["master-key", "wallet-address", "bis-amount"].forEach(field => {
